@@ -9,13 +9,14 @@ namespace atomiki1
 {
     public partial class ShapeDesigner : Form
     {
-   
+
 
         public ShapeDesigner()
         {
             InitializeComponent();
         }
 
+        //-----------------------Strip Menus-----------------------//
         private void stripMenuExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -27,17 +28,18 @@ namespace atomiki1
         }
 
         //-----------------------Color picker-----------------------//
-        Color current_color;
+
+        //Color picker dialog for the primary color
         private void ColorPicker1_Click(object sender, EventArgs e)
         {
             if (ColorPickerDialog.ShowDialog() == DialogResult.OK)
             {
                 ColorPicker1.BackColor = ColorPickerDialog.Color;
-                current_color = ColorPickerDialog.Color;
+                pen.Color = ColorPickerDialog.Color;
             }
         }
 
-        Color secondary_color;
+        // Color picker dialog for the secondary color
         private void ColorPicker2_Click(object sender, EventArgs e)
         {
             if (ColorPickerDialog.ShowDialog() == DialogResult.OK)
@@ -55,19 +57,18 @@ namespace atomiki1
             ColorPicker1.BackColor = ColorPicker2.BackColor;
             ColorPicker2.BackColor = tempColor;
 
-            //And switch the current colors
-            current_color = ColorPicker1.BackColor;
+            //And switch the pen color
+            pen.Color = ColorPicker1.BackColor;
         }
 
 
 
-        //-----------------------Paint-----------------------//
-        Pen pen, eraser;
+        //-----------------------Draw-----------------------//
         Graphics graphics;
         Bitmap bitmap;
         Point start, stop;
         List<Point> points = new List<Point>();
-
+        Pen pen, eraser;
         bool draw;
 
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
@@ -84,23 +85,94 @@ namespace atomiki1
             graphics.DrawLine(pen, start, stop);
         }
 
-        private void Canvas_LoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+
+
+
+        private void ClearCanvas_Click(object sender, EventArgs e)
         {
-            pen = new Pen(Color.Black, 3);
+            // Clear the bitmap with a white background
+            graphics.Clear(Color.White);
+            Canvas.Invalidate(); // Refresh the canvas
+        }
+
+
+        private void ShapeDesigner_Load(object sender, EventArgs e)
+        {
             bitmap = new Bitmap(Canvas.Width, Canvas.Height);
+
             graphics = Graphics.FromImage(bitmap);
             graphics.Clear(Color.White);
+
+            pen = new Pen(Color.Black, 3);
+            eraser = new Pen(Canvas.BackColor, 3);
+
             Canvas.Image = bitmap;
         }
+
+        private void ShapeDesigner_Resize(object sender, EventArgs e)
+        {
+            if (bitmap != null)
+            {
+                Bitmap tempBitmap = new Bitmap(Canvas.Width, Canvas.Height);
+
+                using (Graphics g = Graphics.FromImage(tempBitmap))
+                {
+                    g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
+                }
+
+                bitmap.Dispose(); // Dispose the previous bitmap
+                bitmap = tempBitmap;
+                Canvas.Image = bitmap;
+                graphics = Graphics.FromImage(bitmap);
+            }
+        }
+
+
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (draw)
             {
-                graphics.DrawLine(eraser, start, stop);
-                graphics.DrawLine(pen, start, e.Location);
-                stop = e.Location;
+                switch (curTool)
+                {   // Preview before placement for each tool
+                    case DrawingTool.Line:
+                        graphics.DrawLine(eraser, start, stop);
+                        graphics.DrawLine(pen, start, e.Location);
+                        stop = e.Location;
+                        break;
+
+                }
             }
+            Canvas.Refresh();
+
+            //Changes the Mouse coordinates label
+            MouseCoordsLabel.Text = e.X + ", " + e.Y + "px";
+
         }
+
+        //This simply makes the text for the mouse cursor coordinates to empty string
+        private void Canvas_MouseLeave(object sender, EventArgs e)
+        {
+            MouseCoordsLabel.Text = "";
+        }
+
+
+        //-----------------------Tool Selector-----------------------//
+        enum DrawingTool
+        {
+            Line,
+            Rectangle,
+            Ellipse
+        }
+
+        DrawingTool curTool;
+        private void LineSelectorButton_Click(object sender, EventArgs e)
+        {
+            curTool = DrawingTool.Line;
+        }
+
+
+
     }
 }
+
