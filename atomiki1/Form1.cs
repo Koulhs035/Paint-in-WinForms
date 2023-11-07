@@ -9,7 +9,13 @@ namespace atomiki1
 {
     public partial class ShapeDesigner : Form
     {
-
+        enum DrawingTool
+        {
+            Line,
+            Rectangle,
+            Ellipse,
+            Polygon
+        }
 
         public ShapeDesigner()
         {
@@ -82,7 +88,22 @@ namespace atomiki1
         {
             draw = false;
             stop = e.Location;
-            graphics.DrawLine(pen, start, stop);
+            switch (curTool)
+            {
+                case DrawingTool.Line:
+                    graphics.DrawLine(pen, start, stop);
+                    break;
+                case DrawingTool.Rectangle:
+                    graphics.DrawRectangle(pen, MakeRectangle(start, stop));
+                    break;
+                case DrawingTool.Polygon:
+                    createPolygon(pen, start, e.Location, 6);
+                    break;
+                case DrawingTool.Ellipse:
+                    graphics.DrawEllipse(pen, MakeRectangle(start, stop));
+                    break;
+
+            }
         }
 
 
@@ -140,10 +161,27 @@ namespace atomiki1
                         graphics.DrawLine(pen, start, e.Location);
                         stop = e.Location;
                         break;
-
+                    case DrawingTool.Rectangle:
+                        graphics.DrawRectangle(eraser, MakeRectangle(start, stop));
+                        graphics.DrawRectangle(pen, MakeRectangle(start, e.Location));
+                        stop = e.Location; 
+                        break;
+                    case DrawingTool.Polygon:
+                        createPolygon(eraser, start,stop, 6);
+                        createPolygon(pen, start,e.Location, 6);
+                        stop = e.Location;
+                        break;
+                    case DrawingTool.Ellipse:
+                        graphics.DrawEllipse(eraser, MakeRectangle(start, stop));
+                        graphics.DrawEllipse(pen, MakeRectangle(start, e.Location));
+                        stop = e.Location;
+                        break;
                 }
             }
+
             Canvas.Refresh();
+           //graphics.Clear(Color.Transparent); // I will use this later when i use layers to not erase everything
+
 
             //Changes the Mouse coordinates label
             MouseCoordsLabel.Text = e.X + ", " + e.Y + "px";
@@ -158,21 +196,74 @@ namespace atomiki1
 
 
         //-----------------------Tool Selector-----------------------//
-        enum DrawingTool
-        {
-            Line,
-            Rectangle,
-            Ellipse
-        }
 
         DrawingTool curTool;
+
+        private void RectangleSelectButton_Click(object sender, EventArgs e)
+        {
+            curTool = DrawingTool.Rectangle;
+            CurrentToolLabel.Text = "Current Tool: Rectangle";
+        }
+
+
+        private void PolygonSelectorButton_Click(object sender, EventArgs e)
+        {
+            curTool = DrawingTool.Polygon;
+            CurrentToolLabel.Text = "Current Tool: Polygon";
+        }
+
         private void LineSelectorButton_Click(object sender, EventArgs e)
         {
             curTool = DrawingTool.Line;
+            CurrentToolLabel.Text = "Current Tool: Line";
+        }
+
+        private void EllipseSelectButton_Click(object sender, EventArgs e)
+        {
+            curTool = DrawingTool.Ellipse;
+            CurrentToolLabel.Text = "Current Tool: Ellipse";
+        }
+
+        private Rectangle MakeRectangle(Point p1, Point p2)
+        {
+            int x = Math.Min(p1.X, p2.X);
+            int y = Math.Min(p1.Y, p2.Y);
+            int width = Math.Abs(p1.X - p2.X);
+            int height = Math.Abs(p1.Y - p2.Y);
+            return new Rectangle(x, y, width, height);
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                bitmap.Save(saveFileDialog.FileName);
+            }
         }
 
 
 
+        PointF[] shape;
+        private void createPolygon(Pen penUsed, Point start, Point stop, int sides)
+        {
+            // Find the center
+            var x0 = (start.X + stop.X) / 2;
+            var y0 = (start.Y + stop.Y) / 2;
+
+            shape = new PointF[sides];
+
+            float angle = 360 / sides;
+
+            float r = (float)Math.Sqrt(Math.Pow((start.X - stop.X), 2) + Math.Pow((start.Y - stop.Y), 2)) / 2;
+
+            for (int a = 0; a < sides; a++)
+            {
+                shape[a] = new PointF(
+                    x0 + r * (float)Math.Cos(a * angle * Math.PI / 180f),
+                    y0 + r * (float)Math.Sin(a * angle * Math.PI / 180f));
+            }
+            graphics.DrawPolygon(penUsed, shape);
+            pictureBox1.Refresh();
+        }
     }
 }
-
