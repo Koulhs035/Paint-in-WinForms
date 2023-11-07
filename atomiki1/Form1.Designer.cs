@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace atomiki1
 {
-    partial class ShapeDesigner
+    partial class Shapes
     {
         /// <summary>
         /// Required designer variable.
