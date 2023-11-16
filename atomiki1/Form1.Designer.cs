@@ -48,6 +48,7 @@ namespace atomiki1
             this.button1 = new System.Windows.Forms.Button();
             this.FillSelectButton = new System.Windows.Forms.Button();
             this.EraserSelectButton = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.LineSelectorButton = new System.Windows.Forms.Button();
             this.RectangleSelectButton = new System.Windows.Forms.Button();
@@ -68,6 +69,7 @@ namespace atomiki1
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.MouseCoordsLabel = new System.Windows.Forms.Label();
+            this.rightBorderPanel = new System.Windows.Forms.Panel();
             this.CurrentToolLabel = new System.Windows.Forms.Label();
             this.ColorPickerDialog = new System.Windows.Forms.ColorDialog();
             this.LeftFiller = new System.Windows.Forms.Panel();
@@ -77,8 +79,6 @@ namespace atomiki1
             this.RightFiller = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.Canvas = new System.Windows.Forms.PictureBox();
-            this.rightBorderPanel = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.TopPanelTools.SuspendLayout();
             this.FileMenuStrip.SuspendLayout();
             this.ToolBoxPanel.SuspendLayout();
@@ -129,6 +129,7 @@ namespace atomiki1
             // FileMenuStrip
             // 
             this.FileMenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.FileMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.FileMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitAppToolStripMenuItem,
             this.toolStripSeparator1,
@@ -292,6 +293,16 @@ namespace atomiki1
             this.EraserSelectButton.TabIndex = 5;
             this.EraserSelectButton.UseVisualStyleBackColor = true;
             this.EraserSelectButton.Click += new System.EventHandler(this.EraserSelectButton_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel3.Location = new System.Drawing.Point(195, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1, 70);
+            this.panel3.TabIndex = 6;
             // 
             // flowLayoutPanel1
             // 
@@ -599,6 +610,16 @@ namespace atomiki1
             this.MouseCoordsLabel.TabIndex = 0;
             this.MouseCoordsLabel.Text = "            ";
             // 
+            // rightBorderPanel
+            // 
+            this.rightBorderPanel.BackColor = System.Drawing.Color.White;
+            this.rightBorderPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.rightBorderPanel.Location = new System.Drawing.Point(123, 0);
+            this.rightBorderPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.rightBorderPanel.Name = "rightBorderPanel";
+            this.rightBorderPanel.Size = new System.Drawing.Size(1, 32);
+            this.rightBorderPanel.TabIndex = 2;
+            // 
             // CurrentToolLabel
             // 
             this.CurrentToolLabel.AutoSize = true;
@@ -650,6 +671,7 @@ namespace atomiki1
             // 
             this.polygonCornerTrackBar.Cursor = System.Windows.Forms.Cursors.NoMoveHoriz;
             this.polygonCornerTrackBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.polygonCornerTrackBar.LargeChange = 3;
             this.polygonCornerTrackBar.Location = new System.Drawing.Point(0, 0);
             this.polygonCornerTrackBar.Maximum = 12;
             this.polygonCornerTrackBar.Minimum = 5;
@@ -688,26 +710,6 @@ namespace atomiki1
             this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
-            // 
-            // rightBorderPanel
-            // 
-            this.rightBorderPanel.BackColor = System.Drawing.Color.White;
-            this.rightBorderPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.rightBorderPanel.Location = new System.Drawing.Point(123, 0);
-            this.rightBorderPanel.Margin = new System.Windows.Forms.Padding(2);
-            this.rightBorderPanel.Name = "rightBorderPanel";
-            this.rightBorderPanel.Size = new System.Drawing.Size(1, 32);
-            this.rightBorderPanel.TabIndex = 2;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(195, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1, 70);
-            this.panel3.TabIndex = 6;
             // 
             // Shapes
             // 

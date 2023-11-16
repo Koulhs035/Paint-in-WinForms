@@ -26,7 +26,7 @@ namespace atomiki1
             Triangle,
             Star,
             Heart,
-            Cube
+            Cube,
         }
         DrawingTool curTool = DrawingTool.None;
 
@@ -35,6 +35,7 @@ namespace atomiki1
             InitializeComponent();
         }
 
+        List<insertedShape> toolList = new List<insertedShape>();
 
 
 
@@ -46,10 +47,41 @@ namespace atomiki1
         List<Point> points = new List<Point>();
         Pen pen, eraser;
         Brush brush = new SolidBrush(Color.Black);
-        int brushThickness;
+        int brushThickness = 8;
         bool draw;
         bool fill = false;
         int polygonSides = 5;
+
+        private struct insertedShape
+        {
+            public DrawingTool tool;
+            public Point start, stop;
+            public Pen pen;
+            public Brush brush;
+            public int polygonSides, thickness; // Assign a default value here
+            public bool fill;
+
+            // Constructor for insertedShape struct
+            public insertedShape(
+                DrawingTool tool,
+                Point start,
+                Point stop,
+                Color penColor,
+                Color brushColor,
+                int polygonSides,
+                int penThickness,
+                bool fill)
+            {
+                this.tool = tool;
+                this.start = start;
+                this.stop = stop;
+                this.thickness = penThickness; // Assign a default value to brushThickness
+                this.pen = new Pen(penColor, penThickness);
+                this.brush = new SolidBrush(brushColor); // Initializing Brush with provided color
+                this.polygonSides = polygonSides;
+                this.fill = fill;
+            }
+        }
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             draw = true;
@@ -61,72 +93,80 @@ namespace atomiki1
         {
             draw = false;
             stop = e.Location;
-            switch (curTool)
+            drawShape(curTool, pen, brush, start, stop, polygonSides, fill);
+            insertedShape shape = new insertedShape(curTool, start, stop, pen.Color, ColorPicker2.BackColor, polygonSides, brushThickness, fill);
+            toolList.Add(shape);
+        }
+
+        private void drawShape(DrawingTool tool, Pen curPen, Brush curBrush, Point startP, Point stopP, int sides, bool fillShape)
+        {
+
+            switch (tool)
             {
                 case DrawingTool.None:
                     break;
 
                 case DrawingTool.Line:
-                    graphics.DrawLine(pen, start, stop);
+                    graphics.DrawLine(curPen, startP, stopP);
                     break;
 
                 case DrawingTool.Rectangle:
-                    graphics.DrawRectangle(pen, MakeRectangle(start, stop));
-                    if (fill)
-                        graphics.FillRectangle(brush, MakeRectangle(start, stop));
+                    graphics.DrawRectangle(curPen, MakeRectangle(startP, stopP));
+                    if (fillShape)
+                        graphics.FillRectangle(curBrush, MakeRectangle(startP, stopP));
                     break;
 
                 case DrawingTool.Polygon:
-                    graphics.DrawPolygon(pen, createPolygon(start, stop));
-                    if (fill)
-                        graphics.FillPolygon(brush, createPolygon(start, stop));
+                    graphics.DrawPolygon(curPen, createPolygon(startP, stopP, sides));
+                    if (fillShape)
+                        graphics.FillPolygon(brush, createPolygon(startP, stopP, sides));
                     break;
 
                 case DrawingTool.Ellipse:
-                    graphics.DrawEllipse(pen, MakeRectangle(start, stop));
-                    if (fill)
-                        graphics.FillEllipse(brush, MakeRectangle(start, stop));
+                    graphics.DrawEllipse(curPen, MakeRectangle(startP, stopP));
+                    if (fillShape)
+                        graphics.FillEllipse(curBrush, MakeRectangle(startP, stopP));
                     break;
 
                 case DrawingTool.Circle:
-                    graphics.DrawEllipse(pen, makeSquare(start, stop));
-                    if (fill)
-                        graphics.FillEllipse(brush, makeSquare(start, stop));
+                    graphics.DrawEllipse(curPen, makeSquare(startP, stopP));
+                    if (fillShape)
+                        graphics.FillEllipse(curBrush, makeSquare(startP, stopP));
                     break;
                 case DrawingTool.Square:
-                    graphics.DrawRectangle(pen, makeSquare(start, stop));
-                    if (fill)
-                        graphics.FillRectangle(brush, makeSquare(start, stop));
+                    graphics.DrawRectangle(curPen, makeSquare(startP, stopP));
+                    if (fillShape)
+                        graphics.FillRectangle(curBrush, makeSquare(startP, stopP));
                     break;
 
                 case DrawingTool.Diamond:
-                    createDiamond(pen, start, e.Location, false);
-                    if (fill)
-                        createDiamond(pen, start, e.Location, true);
+                    createDiamond(curPen, startP, stopP, false);
+                    if (fillShape)
+                        createDiamond(curPen, startP, stopP, true);
                     break;
 
                 case DrawingTool.Cross:
-                    createCross(pen, start, e.Location, false);
-                    if (fill)
-                        createCross(pen, start, e.Location, true);
+                    createCross(curPen, startP, stopP, false);
+                    if (fillShape)
+                        createCross(curPen, startP, stopP, true);
                     break;
                 case DrawingTool.Triangle:
-                    createTriangle(pen, start, stop, false);
-                    if (fill)
-                        createTriangle(pen, start, stop, true);
+                    createTriangle(curPen, startP, stopP, false);
+                    if (fillShape)
+                        createTriangle(pen, startP, stopP, true);
                     break;
                 case DrawingTool.Star:
-                    createStar(pen, start, e.Location, false);
-                    if (fill)
-                        createStar(pen, start, e.Location, true);
+                    createStar(curPen, startP, stopP, false);
+                    if (fillShape)
+                        createStar(curPen, startP, stopP, true);
                     break;
                 case DrawingTool.Heart:
-                    createHeart(pen, start, e.Location, false);
-                    if (fill)
-                        createHeart(pen, start, e.Location, true);
+                    createHeart(curPen, startP, stopP, false);
+                    if (fillShape)
+                        createHeart(curPen, startP, stopP, true);
                     break;
                 case DrawingTool.Cube:
-                    createCube(pen, start, e.Location);
+                    createCube(curPen, startP, stopP);
                     break;
 
             }
@@ -139,8 +179,9 @@ namespace atomiki1
             graphics = Graphics.FromImage(bitmap);
             graphics.Clear(Color.White);
 
-            pen = new Pen(Color.Black, 3);
-            eraser = new Pen(Canvas.BackColor, 3);
+
+            pen = new Pen(Color.Black, brushThickness);
+            eraser = new Pen(Canvas.BackColor, brushThickness);
 
             Canvas.Image = bitmap;
         }
@@ -153,75 +194,15 @@ namespace atomiki1
 
             if (draw)
             {
-                switch (curTool)
-                {   // Preview before placement for each tool
-                    case DrawingTool.None:
-                        break;
-                    case DrawingTool.Eraser:
-                        graphics.DrawLine(eraser, lastPoint, e.Location);
-                        lastPoint = e.Location;
-                        break;
-                    case DrawingTool.Line:
-                        graphics.DrawLine(eraser, start, stop);
-                        graphics.DrawLine(pen, start, e.Location);
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Rectangle:
-                        graphics.DrawRectangle(eraser, MakeRectangle(start, stop));
-                        graphics.DrawRectangle(pen, MakeRectangle(start, e.Location));
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Polygon:
-                        graphics.DrawPolygon(eraser, createPolygon(start, stop));
-                        graphics.DrawPolygon(pen, createPolygon(start, e.Location));
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Ellipse:
-                        graphics.DrawEllipse(eraser, MakeRectangle(start, stop));
-                        graphics.DrawEllipse(pen, MakeRectangle(start, e.Location));
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Circle:
-                        graphics.DrawEllipse(eraser, makeSquare(start, stop));
-                        graphics.DrawEllipse(pen, makeSquare(start, e.Location));
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Square:
-                        graphics.DrawRectangle(eraser, makeSquare(start, stop));
-                        graphics.DrawRectangle(pen, makeSquare(start, e.Location));
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Diamond:
-                        createDiamond(eraser, start, stop, false);
-                        createDiamond(pen, start, e.Location, false);
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Cross:
-                        createCross(eraser, start, stop, false);
-                        createCross(pen, start, e.Location, false);
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Triangle:
-                        createTriangle(eraser, start, stop, false);
-                        createTriangle(pen, start, e.Location, false);
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Star:
-                        createStar(eraser, start, stop, false);
-                        createStar(pen, start, e.Location, false);
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Heart:
-                        createHeart(eraser, start, stop, false);
-                        createHeart(pen, start, e.Location, false);
-                        stop = e.Location;
-                        break;
-                    case DrawingTool.Cube:
-                        createCube(eraser, start, stop);
-                        createCube(pen, start, e.Location);
-                        stop = e.Location;
-                        break;
+                foreach (insertedShape insShape in toolList)
+                {
+                    drawShape(insShape.tool, insShape.pen, insShape.brush, insShape.start, insShape.stop, insShape.polygonSides, insShape.fill);
                 }
+
+                drawShape(curTool, eraser, brush, start, stop, polygonSides, false);
+                drawShape(curTool, pen, brush, start, e.Location, polygonSides, false);
+                stop = e.Location;
+
             }
 
             Canvas.Refresh();
@@ -238,8 +219,6 @@ namespace atomiki1
         {
             MouseCoordsLabel.Text = "";
         }
-
-
 
         private Rectangle MakeRectangle(Point p1, Point p2)
         {
@@ -262,15 +241,15 @@ namespace atomiki1
 
 
         PointF[] shape;
-        private PointF[] createPolygon(Point start, Point stop)
+        private PointF[] createPolygon(Point start, Point stop, int sides)
         {
             // Find the center
             var x0 = (start.X + stop.X) / 2;
             var y0 = (start.Y + stop.Y) / 2;
 
-            shape = new PointF[polygonSides];
+            shape = new PointF[sides];
 
-            float angle = 360 / polygonSides;
+            float angle = 360 / sides;
 
             float r = (float)Math.Sqrt(Math.Pow((start.X - stop.X), 2) + Math.Pow((start.Y - stop.Y), 2)) / 2;
 
@@ -282,9 +261,6 @@ namespace atomiki1
             }
             return shape;
         }
-
-
-
 
         private void createDiamond(Pen penUsed, Point start, Point stop, bool drawFill)
         {
@@ -336,8 +312,6 @@ namespace atomiki1
                 }
             }
         }
-
-
 
         private void createCross(Pen penUsed, Point start, Point stop, bool drawFill)
         {
@@ -422,7 +396,6 @@ namespace atomiki1
                 }
             }
         }
-
 
         private void createHeart(Pen penUsed, Point start, Point stop, bool drawFill)
         {
@@ -711,8 +684,5 @@ namespace atomiki1
             curTool = DrawingTool.Ellipse;
             CurrentToolLabel.Text = "Current Tool: Ellipse";
         }
- 
-        
-
     }
 }
