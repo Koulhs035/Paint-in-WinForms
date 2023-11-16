@@ -13,6 +13,8 @@ namespace atomiki1
 
         enum DrawingTool
         {
+            None,
+            Eraser,
             Line,
             Rectangle,
             Ellipse,
@@ -21,9 +23,12 @@ namespace atomiki1
             Square,
             Diamond,
             Cross,
-            Eraser
+            Triangle,
+            Star,
+            Heart,
+            Cube
         }
-        DrawingTool curTool;
+        DrawingTool curTool = DrawingTool.None;
 
         public Shapes()
         {
@@ -44,7 +49,7 @@ namespace atomiki1
         int brushThickness;
         bool draw;
         bool fill = false;
-
+        int polygonSides = 5;
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             draw = true;
@@ -58,6 +63,9 @@ namespace atomiki1
             stop = e.Location;
             switch (curTool)
             {
+                case DrawingTool.None:
+                    break;
+
                 case DrawingTool.Line:
                     graphics.DrawLine(pen, start, stop);
                     break;
@@ -69,9 +77,9 @@ namespace atomiki1
                     break;
 
                 case DrawingTool.Polygon:
-                    graphics.DrawPolygon(pen, createPolygon(start, stop, 6));
+                    graphics.DrawPolygon(pen, createPolygon(start, stop));
                     if (fill)
-                        graphics.FillPolygon(brush, createPolygon(start, stop, 6));
+                        graphics.FillPolygon(brush, createPolygon(start, stop));
                     break;
 
                 case DrawingTool.Ellipse:
@@ -102,6 +110,24 @@ namespace atomiki1
                     if (fill)
                         createCross(pen, start, e.Location, true);
                     break;
+                case DrawingTool.Triangle:
+                    createTriangle(pen, start, stop, false);
+                    if (fill)
+                        createTriangle(pen, start, stop, true);
+                    break;
+                case DrawingTool.Star:
+                    createStar(pen, start, e.Location, false);
+                    if (fill)
+                        createStar(pen, start, e.Location, true);
+                    break;
+                case DrawingTool.Heart:
+                    createHeart(pen, start, e.Location, false);
+                    if (fill)
+                        createHeart(pen, start, e.Location, true);
+                    break;
+                case DrawingTool.Cube:
+                    createCube(pen, start, e.Location);
+                    break;
 
             }
         }
@@ -129,6 +155,8 @@ namespace atomiki1
             {
                 switch (curTool)
                 {   // Preview before placement for each tool
+                    case DrawingTool.None:
+                        break;
                     case DrawingTool.Eraser:
                         graphics.DrawLine(eraser, lastPoint, e.Location);
                         lastPoint = e.Location;
@@ -144,8 +172,8 @@ namespace atomiki1
                         stop = e.Location;
                         break;
                     case DrawingTool.Polygon:
-                        graphics.DrawPolygon(eraser, createPolygon(start, stop, 6));
-                        graphics.DrawPolygon(pen, createPolygon(start, e.Location, 6));
+                        graphics.DrawPolygon(eraser, createPolygon(start, stop));
+                        graphics.DrawPolygon(pen, createPolygon(start, e.Location));
                         stop = e.Location;
                         break;
                     case DrawingTool.Ellipse:
@@ -171,6 +199,26 @@ namespace atomiki1
                     case DrawingTool.Cross:
                         createCross(eraser, start, stop, false);
                         createCross(pen, start, e.Location, false);
+                        stop = e.Location;
+                        break;
+                    case DrawingTool.Triangle:
+                        createTriangle(eraser, start, stop, false);
+                        createTriangle(pen, start, e.Location, false);
+                        stop = e.Location;
+                        break;
+                    case DrawingTool.Star:
+                        createStar(eraser, start, stop, false);
+                        createStar(pen, start, e.Location, false);
+                        stop = e.Location;
+                        break;
+                    case DrawingTool.Heart:
+                        createHeart(eraser, start, stop, false);
+                        createHeart(pen, start, e.Location, false);
+                        stop = e.Location;
+                        break;
+                    case DrawingTool.Cube:
+                        createCube(eraser, start, stop);
+                        createCube(pen, start, e.Location);
                         stop = e.Location;
                         break;
                 }
@@ -214,19 +262,19 @@ namespace atomiki1
 
 
         PointF[] shape;
-        PointF[] createPolygon(Point start, Point stop, int sides)
+        private PointF[] createPolygon(Point start, Point stop)
         {
             // Find the center
             var x0 = (start.X + stop.X) / 2;
             var y0 = (start.Y + stop.Y) / 2;
 
-            shape = new PointF[sides];
+            shape = new PointF[polygonSides];
 
-            float angle = 360 / sides;
+            float angle = 360 / polygonSides;
 
             float r = (float)Math.Sqrt(Math.Pow((start.X - stop.X), 2) + Math.Pow((start.Y - stop.Y), 2)) / 2;
 
-            for (int a = 0; a < sides; a++)
+            for (int a = 0; a < polygonSides; a++)
             {
                 shape[a] = new PointF(
                     x0 + r * (float)Math.Cos(a * angle * Math.PI / 180f),
@@ -234,6 +282,7 @@ namespace atomiki1
             }
             return shape;
         }
+
 
 
 
@@ -262,6 +311,33 @@ namespace atomiki1
                 }
             }
         }
+
+        private void createTriangle(Pen penUsed, Point start, Point stop, bool drawFill)
+        {
+            // Find the center
+            var centerX = (start.X + stop.X) / 2;
+            var centerY = (start.Y + stop.Y) / 2;
+
+            PointF[] triangle = new PointF[3];
+
+            triangle[0] = new PointF(centerX, start.Y); // Top point
+            triangle[1] = new PointF(stop.X, stop.Y);   // Right-bottom point
+            triangle[2] = new PointF(start.X, stop.Y);  // Left-bottom point
+
+            graphics.DrawPolygon(penUsed, triangle);
+
+            if (drawFill)
+            {
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddPolygon(triangle);
+                    graphics.FillPolygon(brush, triangle);
+                    graphics.DrawPolygon(penUsed, triangle);
+                }
+            }
+        }
+
+
 
         private void createCross(Pen penUsed, Point start, Point stop, bool drawFill)
         {
@@ -305,7 +381,137 @@ namespace atomiki1
 
         }
 
+        private void createStar(Pen penUsed, Point start, Point stop, bool drawFill)
+        {
+            int numPoints = 5;
 
+            int minX = Math.Min(start.X, stop.X);
+            int minY = Math.Min(start.Y, stop.Y);
+            int maxX = Math.Max(start.X, stop.X);
+            int maxY = Math.Max(start.Y, stop.Y);
+
+            int width = maxX - minX;
+            int height = maxY - minY;
+
+            int outerRadius = Math.Min(width, height) / 2;
+            int innerRadius = outerRadius / 2;
+
+            Point center = new Point(minX + width / 2, minY + height / 2);
+
+            Point[] starPoints = new Point[2 * numPoints];
+            double angle = Math.PI / numPoints;
+
+            for (int i = 0; i < 2 * numPoints; i++)
+            {
+                double radius = (i % 2 == 0) ? outerRadius : innerRadius;
+                starPoints[i] = new Point(
+                    center.X + (int)(radius * Math.Cos(i * angle - Math.PI / 2)),
+                    center.Y + (int)(radius * Math.Sin(i * angle - Math.PI / 2))
+                );
+            }
+
+            graphics.DrawPolygon(penUsed, starPoints);
+
+            if (drawFill)
+            {
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddPolygon(starPoints);
+                    graphics.FillPolygon(brush, starPoints); // Fill using the Point[] array directly
+                    graphics.DrawPolygon(penUsed, starPoints); // Draw the outline
+                }
+            }
+        }
+
+
+        private void createHeart(Pen penUsed, Point start, Point stop, bool drawFill)
+        {
+            int minX = Math.Min(start.X, stop.X);
+            int minY = Math.Min(start.Y, stop.Y);
+            int maxX = Math.Max(start.X, stop.X);
+            int maxY = Math.Max(start.Y, stop.Y);
+
+            int width = maxX - minX;
+            int height = maxY - minY;
+
+            Point[] heartPoints = new Point[7];
+
+            // Top left curve
+            heartPoints[0] = new Point(minX + width / 2, minY + height / 5);
+            heartPoints[1] = new Point(minX + width / 10, minY);
+
+            // Bottom left curve
+            heartPoints[2] = new Point(minX, minY + 3 * height / 5);
+            heartPoints[3] = new Point(minX + width / 2, maxY);
+
+            // Bottom right curve
+            heartPoints[4] = new Point(maxX, minY + 3 * height / 5);
+            heartPoints[5] = new Point(maxX - width / 10, minY);
+
+            // Top right curve
+            heartPoints[6] = new Point(minX + width / 2, minY + height / 5);
+
+            graphics.DrawBezier(penUsed, heartPoints[0], heartPoints[1], heartPoints[2], heartPoints[3]);
+            graphics.DrawBezier(penUsed, heartPoints[3], heartPoints[4], heartPoints[5], heartPoints[6]);
+
+            if (drawFill)
+            {
+                using (GraphicsPath path = new GraphicsPath())
+                {
+                    path.AddBezier(heartPoints[0], heartPoints[1], heartPoints[2], heartPoints[3]);
+                    path.AddBezier(heartPoints[3], heartPoints[4], heartPoints[5], heartPoints[6]);
+                    graphics.FillPath(brush, path); // Fill using the GraphicsPath
+                    graphics.DrawPath(penUsed, path); // Draw the outline
+                }
+            }
+        }
+
+        private void createCube(Pen penUsed, Point start, Point stop)
+        {
+            int minX = Math.Min(start.X, stop.X);
+            int minY = Math.Min(start.Y, stop.Y);
+            int maxX = Math.Max(start.X, stop.X);
+            int maxY = Math.Max(start.Y, stop.Y);
+
+            int width = maxX - minX;
+            int height = maxY - minY;
+
+            int cubeWidth = width / 3;
+            int cubeHeight = height / 3;
+
+            Point[] cubeFront = new Point[4];
+            Point[] cubeBack = new Point[4];
+
+            // Front face of the cube
+            cubeFront[0] = new Point(minX + cubeWidth, minY);
+            cubeFront[1] = new Point(maxX, minY);
+            cubeFront[2] = new Point(maxX - cubeWidth, minY + cubeHeight);
+            cubeFront[3] = new Point(minX, minY + cubeHeight);
+
+            // Back face of the cube (simulated by shifting the front face)
+            cubeBack[0] = new Point(cubeFront[0].X, cubeFront[0].Y + cubeHeight);
+            cubeBack[1] = new Point(cubeFront[1].X, cubeFront[1].Y + cubeHeight);
+            cubeBack[2] = new Point(cubeFront[2].X, cubeFront[2].Y + cubeHeight);
+            cubeBack[3] = new Point(cubeFront[3].X, cubeFront[3].Y + cubeHeight);
+
+            // Draw the front face
+            graphics.DrawPolygon(penUsed, cubeFront);
+
+            // Draw the connecting edges
+            for (int i = 0; i < 4; i++)
+            {
+                graphics.DrawLine(penUsed, cubeFront[i], cubeBack[i]);
+            }
+
+            // Draw the back face
+            graphics.DrawPolygon(penUsed, cubeBack);
+
+            // Connect the vertices between front and back faces
+            for (int i = 0; i < 4; i++)
+            {
+                graphics.DrawLine(penUsed, cubeFront[i], cubeBack[i]);
+            }
+        }
 
 
 
@@ -408,52 +614,105 @@ namespace atomiki1
         private void PolygonSelectorButton_Click(object sender, EventArgs e)
         {
             curTool = DrawingTool.Polygon;
+            polygonCornerPanel.Show();
             CurrentToolLabel.Text = "Current Tool: Polygon";
         }
 
         private void circleSelectButton_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Circle;
             CurrentToolLabel.Text = "Current Tool: Circle";
         }
 
         private void SquareSelectButton_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Square;
             CurrentToolLabel.Text = "Current Tool: Square";
         }
 
         private void Diamond_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Diamond;
             CurrentToolLabel.Text = "Current Tool: Diamond";
         }
 
         private void CrossSelectButton_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Cross;
             CurrentToolLabel.Text = "Current Tool: Cross";
         }
 
         private void EraserSelectButton_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Eraser;
             CurrentToolLabel.Text = "Current Tool: Eraser";
         }
 
-     
+        private void TriangleSelectButton_Click(object sender, EventArgs e)
+        {
+            polygonCornerPanel.Hide();
+
+            curTool = DrawingTool.Triangle;
+            CurrentToolLabel.Text = "Current Tool: Triangle";
+        }
+
+        private void StarSelectorButton_Click(object sender, EventArgs e)
+        {
+            polygonCornerPanel.Hide();
+
+            curTool = DrawingTool.Star;
+            CurrentToolLabel.Text = "Current Tool: Star";
+        }
+
+        private void heartButtonSelector_Click(object sender, EventArgs e)
+        {
+            polygonCornerPanel.Hide();
+
+            curTool = DrawingTool.Heart;
+            CurrentToolLabel.Text = "Current Tool: Heart";
+        }
+
+        private void cubeSelectButton_Click(object sender, EventArgs e)
+        {
+            polygonCornerPanel.Hide();
+
+            curTool = DrawingTool.Cube;
+            CurrentToolLabel.Text = "Current tool: Check-Mark";
+        }
+
+        private void polygonCornerTrackBar_Scroll(object sender, EventArgs e)
+        {
+            polygonSides = polygonCornerTrackBar.Value;
+            polygonSidesLabel.Text = "Polygon Sides: " + polygonSides;
+        }
 
         private void LineSelectorButton_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Line;
             CurrentToolLabel.Text = "Current Tool: Line";
         }
 
         private void EllipseSelectButton_Click(object sender, EventArgs e)
         {
+            polygonCornerPanel.Hide();
+
             curTool = DrawingTool.Ellipse;
             CurrentToolLabel.Text = "Current Tool: Ellipse";
         }
+ 
+        
 
     }
 }

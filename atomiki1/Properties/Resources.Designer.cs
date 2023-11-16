@@ -93,6 +93,16 @@ namespace atomiki1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cube {
+            get {
+                object obj = ResourceManager.GetObject("cube", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap diamond {
             get {
                 object obj = ResourceManager.GetObject("diamond", resourceCulture);
@@ -116,6 +126,26 @@ namespace atomiki1.Properties {
         internal static System.Drawing.Bitmap eraser {
             get {
                 object obj = ResourceManager.GetObject("eraser", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap heart {
+            get {
+                object obj = ResourceManager.GetObject("heart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mouse {
+            get {
+                object obj = ResourceManager.GetObject("mouse", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +183,29 @@ namespace atomiki1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap star {
+            get {
+                object obj = ResourceManager.GetObject("star", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap swap {
             get {
                 object obj = ResourceManager.GetObject("swap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap triangle {
+            get {
+                object obj = ResourceManager.GetObject("triangle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +223,9 @@ namespace atomiki1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap white_mouse {
+        internal static System.Drawing.Bitmap write {
             get {
-                object obj = ResourceManager.GetObject("white mouse", resourceCulture);
+                object obj = ResourceManager.GetObject("write", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

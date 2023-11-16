@@ -32,6 +32,7 @@ namespace atomiki1
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Shapes));
             this.TopPanelTools = new System.Windows.Forms.Panel();
             this.ClearCanvas = new System.Windows.Forms.Button();
             this.FileMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -41,19 +42,25 @@ namespace atomiki1
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ButtonFile = new System.Windows.Forms.Button();
             this.ToolBoxPanel = new System.Windows.Forms.Panel();
+            this.brushThicknessValueLabel = new System.Windows.Forms.Label();
+            this.brushWidthTrackbar = new System.Windows.Forms.TrackBar();
             this.ToolsLayoutPanel = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.FillSelectButton = new System.Windows.Forms.Button();
             this.EraserSelectButton = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.LineSelectorButton = new System.Windows.Forms.Button();
-            this.PolygonSelectorButton = new System.Windows.Forms.Button();
             this.RectangleSelectButton = new System.Windows.Forms.Button();
-            this.EllipseSelectButton = new System.Windows.Forms.Button();
             this.circleSelectButton = new System.Windows.Forms.Button();
             this.SquareSelectButton = new System.Windows.Forms.Button();
+            this.TriangleSelectButton = new System.Windows.Forms.Button();
+            this.EllipseSelectButton = new System.Windows.Forms.Button();
             this.DiamondSelectButton = new System.Windows.Forms.Button();
             this.CrossSelectButton = new System.Windows.Forms.Button();
+            this.PolygonSelectorButton = new System.Windows.Forms.Button();
+            this.StarSelectorButton = new System.Windows.Forms.Button();
+            this.heartButtonSelector = new System.Windows.Forms.Button();
+            this.cubeSelectButton = new System.Windows.Forms.Button();
             this.SwapColorsButton = new System.Windows.Forms.Button();
             this.ColorPicker1 = new System.Windows.Forms.Button();
             this.ColorPicker2 = new System.Windows.Forms.Button();
@@ -61,25 +68,30 @@ namespace atomiki1
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.MouseCoordsLabel = new System.Windows.Forms.Label();
-            this.rightBorderPanel = new System.Windows.Forms.Panel();
             this.CurrentToolLabel = new System.Windows.Forms.Label();
             this.ColorPickerDialog = new System.Windows.Forms.ColorDialog();
             this.LeftFiller = new System.Windows.Forms.Panel();
+            this.polygonCornerPanel = new System.Windows.Forms.Panel();
+            this.polygonSidesLabel = new System.Windows.Forms.Label();
+            this.polygonCornerTrackBar = new System.Windows.Forms.TrackBar();
             this.RightFiller = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.Canvas = new System.Windows.Forms.PictureBox();
-            this.brushWidthTrackbar = new System.Windows.Forms.TrackBar();
-            this.brushThicknessValueLabel = new System.Windows.Forms.Label();
+            this.rightBorderPanel = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.TopPanelTools.SuspendLayout();
             this.FileMenuStrip.SuspendLayout();
             this.ToolBoxPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.brushWidthTrackbar)).BeginInit();
             this.ToolsLayoutPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.LeftFiller.SuspendLayout();
+            this.polygonCornerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.polygonCornerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.brushWidthTrackbar)).BeginInit();
             this.SuspendLayout();
             // 
             // TopPanelTools
@@ -194,16 +206,60 @@ namespace atomiki1
             this.ToolBoxPanel.Size = new System.Drawing.Size(1063, 72);
             this.ToolBoxPanel.TabIndex = 2;
             // 
+            // brushThicknessValueLabel
+            // 
+            this.brushThicknessValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.brushThicknessValueLabel.AutoSize = true;
+            this.brushThicknessValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.brushThicknessValueLabel.ForeColor = System.Drawing.Color.White;
+            this.brushThicknessValueLabel.Location = new System.Drawing.Point(233, -3);
+            this.brushThicknessValueLabel.Name = "brushThicknessValueLabel";
+            this.brushThicknessValueLabel.Size = new System.Drawing.Size(46, 16);
+            this.brushThicknessValueLabel.TabIndex = 10;
+            this.brushThicknessValueLabel.Text = "Size: 8";
+            // 
+            // brushWidthTrackbar
+            // 
+            this.brushWidthTrackbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.brushWidthTrackbar.Cursor = System.Windows.Forms.Cursors.NoMoveVert;
+            this.brushWidthTrackbar.Location = new System.Drawing.Point(236, 3);
+            this.brushWidthTrackbar.Maximum = 26;
+            this.brushWidthTrackbar.Minimum = 5;
+            this.brushWidthTrackbar.Name = "brushWidthTrackbar";
+            this.brushWidthTrackbar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.brushWidthTrackbar.Size = new System.Drawing.Size(45, 71);
+            this.brushWidthTrackbar.TabIndex = 8;
+            this.brushWidthTrackbar.Value = 8;
+            this.brushWidthTrackbar.Scroll += new System.EventHandler(this.brushWidthTrackbar_Scroll);
+            // 
             // ToolsLayoutPanel
             // 
             this.ToolsLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ToolsLayoutPanel.Controls.Add(this.button1);
             this.ToolsLayoutPanel.Controls.Add(this.FillSelectButton);
             this.ToolsLayoutPanel.Controls.Add(this.EraserSelectButton);
             this.ToolsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ToolsLayoutPanel.Location = new System.Drawing.Point(171, 0);
+            this.ToolsLayoutPanel.Location = new System.Drawing.Point(196, 0);
             this.ToolsLayoutPanel.Name = "ToolsLayoutPanel";
-            this.ToolsLayoutPanel.Size = new System.Drawing.Size(36, 70);
+            this.ToolsLayoutPanel.Size = new System.Drawing.Size(34, 70);
             this.ToolsLayoutPanel.TabIndex = 7;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.BackgroundImage = global::atomiki1.Properties.Resources.write;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(5, 43);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(18, 22);
+            this.button1.TabIndex = 7;
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // FillSelectButton
             // 
@@ -214,9 +270,9 @@ namespace atomiki1
             this.FillSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FillSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FillSelectButton.ForeColor = System.Drawing.Color.White;
-            this.FillSelectButton.Location = new System.Drawing.Point(5, 32);
+            this.FillSelectButton.Location = new System.Drawing.Point(5, -1);
             this.FillSelectButton.Name = "FillSelectButton";
-            this.FillSelectButton.Size = new System.Drawing.Size(26, 23);
+            this.FillSelectButton.Size = new System.Drawing.Size(18, 21);
             this.FillSelectButton.TabIndex = 6;
             this.FillSelectButton.UseVisualStyleBackColor = true;
             this.FillSelectButton.Click += new System.EventHandler(this.FillSelectButton_Click);
@@ -230,22 +286,12 @@ namespace atomiki1
             this.EraserSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EraserSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EraserSelectButton.ForeColor = System.Drawing.Color.White;
-            this.EraserSelectButton.Location = new System.Drawing.Point(5, 3);
+            this.EraserSelectButton.Location = new System.Drawing.Point(5, 18);
             this.EraserSelectButton.Name = "EraserSelectButton";
-            this.EraserSelectButton.Size = new System.Drawing.Size(26, 23);
+            this.EraserSelectButton.Size = new System.Drawing.Size(18, 22);
             this.EraserSelectButton.TabIndex = 5;
             this.EraserSelectButton.UseVisualStyleBackColor = true;
             this.EraserSelectButton.Click += new System.EventHandler(this.EraserSelectButton_Click);
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel3.Location = new System.Drawing.Point(170, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1, 70);
-            this.panel3.TabIndex = 6;
             // 
             // flowLayoutPanel1
             // 
@@ -253,15 +299,19 @@ namespace atomiki1
             this.flowLayoutPanel1.Controls.Add(this.RectangleSelectButton);
             this.flowLayoutPanel1.Controls.Add(this.circleSelectButton);
             this.flowLayoutPanel1.Controls.Add(this.SquareSelectButton);
+            this.flowLayoutPanel1.Controls.Add(this.TriangleSelectButton);
             this.flowLayoutPanel1.Controls.Add(this.EllipseSelectButton);
             this.flowLayoutPanel1.Controls.Add(this.DiamondSelectButton);
             this.flowLayoutPanel1.Controls.Add(this.CrossSelectButton);
             this.flowLayoutPanel1.Controls.Add(this.PolygonSelectorButton);
+            this.flowLayoutPanel1.Controls.Add(this.StarSelectorButton);
+            this.flowLayoutPanel1.Controls.Add(this.heartButtonSelector);
+            this.flowLayoutPanel1.Controls.Add(this.cubeSelectButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(170, 70);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(195, 70);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // LineSelectorButton
@@ -279,22 +329,6 @@ namespace atomiki1
             this.LineSelectorButton.UseVisualStyleBackColor = true;
             this.LineSelectorButton.Click += new System.EventHandler(this.LineSelectorButton_Click);
             // 
-            // PolygonSelectorButton
-            // 
-            this.PolygonSelectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.PolygonSelectorButton.BackgroundImage = global::atomiki1.Properties.Resources.polygon;
-            this.PolygonSelectorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PolygonSelectorButton.FlatAppearance.BorderSize = 0;
-            this.PolygonSelectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PolygonSelectorButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PolygonSelectorButton.ForeColor = System.Drawing.Color.White;
-            this.PolygonSelectorButton.Location = new System.Drawing.Point(67, 32);
-            this.PolygonSelectorButton.Name = "PolygonSelectorButton";
-            this.PolygonSelectorButton.Size = new System.Drawing.Size(26, 23);
-            this.PolygonSelectorButton.TabIndex = 2;
-            this.PolygonSelectorButton.UseVisualStyleBackColor = true;
-            this.PolygonSelectorButton.Click += new System.EventHandler(this.PolygonSelectorButton_Click);
-            // 
             // RectangleSelectButton
             // 
             this.RectangleSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -310,22 +344,6 @@ namespace atomiki1
             this.RectangleSelectButton.TabIndex = 1;
             this.RectangleSelectButton.UseVisualStyleBackColor = true;
             this.RectangleSelectButton.Click += new System.EventHandler(this.RectangleSelectButton_Click);
-            // 
-            // EllipseSelectButton
-            // 
-            this.EllipseSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.EllipseSelectButton.BackgroundImage = global::atomiki1.Properties.Resources.ellipse;
-            this.EllipseSelectButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.EllipseSelectButton.FlatAppearance.BorderSize = 0;
-            this.EllipseSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EllipseSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EllipseSelectButton.ForeColor = System.Drawing.Color.White;
-            this.EllipseSelectButton.Location = new System.Drawing.Point(131, 3);
-            this.EllipseSelectButton.Name = "EllipseSelectButton";
-            this.EllipseSelectButton.Size = new System.Drawing.Size(26, 23);
-            this.EllipseSelectButton.TabIndex = 3;
-            this.EllipseSelectButton.UseVisualStyleBackColor = true;
-            this.EllipseSelectButton.Click += new System.EventHandler(this.EllipseSelectButton_Click);
             // 
             // circleSelectButton
             // 
@@ -359,6 +377,38 @@ namespace atomiki1
             this.SquareSelectButton.UseVisualStyleBackColor = true;
             this.SquareSelectButton.Click += new System.EventHandler(this.SquareSelectButton_Click);
             // 
+            // TriangleSelectButton
+            // 
+            this.TriangleSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TriangleSelectButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TriangleSelectButton.BackgroundImage")));
+            this.TriangleSelectButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.TriangleSelectButton.FlatAppearance.BorderSize = 0;
+            this.TriangleSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TriangleSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TriangleSelectButton.ForeColor = System.Drawing.Color.White;
+            this.TriangleSelectButton.Location = new System.Drawing.Point(131, 3);
+            this.TriangleSelectButton.Name = "TriangleSelectButton";
+            this.TriangleSelectButton.Size = new System.Drawing.Size(26, 23);
+            this.TriangleSelectButton.TabIndex = 8;
+            this.TriangleSelectButton.UseVisualStyleBackColor = true;
+            this.TriangleSelectButton.Click += new System.EventHandler(this.TriangleSelectButton_Click);
+            // 
+            // EllipseSelectButton
+            // 
+            this.EllipseSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.EllipseSelectButton.BackgroundImage = global::atomiki1.Properties.Resources.ellipse;
+            this.EllipseSelectButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.EllipseSelectButton.FlatAppearance.BorderSize = 0;
+            this.EllipseSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EllipseSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EllipseSelectButton.ForeColor = System.Drawing.Color.White;
+            this.EllipseSelectButton.Location = new System.Drawing.Point(163, 3);
+            this.EllipseSelectButton.Name = "EllipseSelectButton";
+            this.EllipseSelectButton.Size = new System.Drawing.Size(26, 23);
+            this.EllipseSelectButton.TabIndex = 3;
+            this.EllipseSelectButton.UseVisualStyleBackColor = true;
+            this.EllipseSelectButton.Click += new System.EventHandler(this.EllipseSelectButton_Click);
+            // 
             // DiamondSelectButton
             // 
             this.DiamondSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -390,6 +440,70 @@ namespace atomiki1
             this.CrossSelectButton.TabIndex = 7;
             this.CrossSelectButton.UseVisualStyleBackColor = true;
             this.CrossSelectButton.Click += new System.EventHandler(this.CrossSelectButton_Click);
+            // 
+            // PolygonSelectorButton
+            // 
+            this.PolygonSelectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PolygonSelectorButton.BackgroundImage = global::atomiki1.Properties.Resources.polygon;
+            this.PolygonSelectorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.PolygonSelectorButton.FlatAppearance.BorderSize = 0;
+            this.PolygonSelectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PolygonSelectorButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PolygonSelectorButton.ForeColor = System.Drawing.Color.White;
+            this.PolygonSelectorButton.Location = new System.Drawing.Point(67, 32);
+            this.PolygonSelectorButton.Name = "PolygonSelectorButton";
+            this.PolygonSelectorButton.Size = new System.Drawing.Size(26, 23);
+            this.PolygonSelectorButton.TabIndex = 2;
+            this.PolygonSelectorButton.UseVisualStyleBackColor = true;
+            this.PolygonSelectorButton.Click += new System.EventHandler(this.PolygonSelectorButton_Click);
+            // 
+            // StarSelectorButton
+            // 
+            this.StarSelectorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.StarSelectorButton.BackgroundImage = global::atomiki1.Properties.Resources.star;
+            this.StarSelectorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.StarSelectorButton.FlatAppearance.BorderSize = 0;
+            this.StarSelectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StarSelectorButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StarSelectorButton.ForeColor = System.Drawing.Color.White;
+            this.StarSelectorButton.Location = new System.Drawing.Point(99, 32);
+            this.StarSelectorButton.Name = "StarSelectorButton";
+            this.StarSelectorButton.Size = new System.Drawing.Size(26, 23);
+            this.StarSelectorButton.TabIndex = 9;
+            this.StarSelectorButton.UseVisualStyleBackColor = true;
+            this.StarSelectorButton.Click += new System.EventHandler(this.StarSelectorButton_Click);
+            // 
+            // heartButtonSelector
+            // 
+            this.heartButtonSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.heartButtonSelector.BackgroundImage = global::atomiki1.Properties.Resources.heart;
+            this.heartButtonSelector.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.heartButtonSelector.FlatAppearance.BorderSize = 0;
+            this.heartButtonSelector.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.heartButtonSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.heartButtonSelector.ForeColor = System.Drawing.Color.White;
+            this.heartButtonSelector.Location = new System.Drawing.Point(131, 32);
+            this.heartButtonSelector.Name = "heartButtonSelector";
+            this.heartButtonSelector.Size = new System.Drawing.Size(26, 23);
+            this.heartButtonSelector.TabIndex = 10;
+            this.heartButtonSelector.UseVisualStyleBackColor = true;
+            this.heartButtonSelector.Click += new System.EventHandler(this.heartButtonSelector_Click);
+            // 
+            // cubeSelectButton
+            // 
+            this.cubeSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cubeSelectButton.BackgroundImage = global::atomiki1.Properties.Resources.cube;
+            this.cubeSelectButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cubeSelectButton.FlatAppearance.BorderSize = 0;
+            this.cubeSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cubeSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cubeSelectButton.ForeColor = System.Drawing.Color.White;
+            this.cubeSelectButton.Location = new System.Drawing.Point(163, 32);
+            this.cubeSelectButton.Name = "cubeSelectButton";
+            this.cubeSelectButton.Size = new System.Drawing.Size(26, 23);
+            this.cubeSelectButton.TabIndex = 11;
+            this.cubeSelectButton.UseVisualStyleBackColor = true;
+            this.cubeSelectButton.Click += new System.EventHandler(this.cubeSelectButton_Click);
             // 
             // SwapColorsButton
             // 
@@ -466,7 +580,7 @@ namespace atomiki1
             // pictureBox1
             // 
             this.pictureBox1.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.pictureBox1.BackgroundImage = global::atomiki1.Properties.Resources.white_mouse;
+            this.pictureBox1.BackgroundImage = global::atomiki1.Properties.Resources.mouse;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
@@ -485,16 +599,6 @@ namespace atomiki1
             this.MouseCoordsLabel.TabIndex = 0;
             this.MouseCoordsLabel.Text = "            ";
             // 
-            // rightBorderPanel
-            // 
-            this.rightBorderPanel.BackColor = System.Drawing.Color.White;
-            this.rightBorderPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.rightBorderPanel.Location = new System.Drawing.Point(123, 0);
-            this.rightBorderPanel.Margin = new System.Windows.Forms.Padding(2);
-            this.rightBorderPanel.Name = "rightBorderPanel";
-            this.rightBorderPanel.Size = new System.Drawing.Size(1, 32);
-            this.rightBorderPanel.TabIndex = 2;
-            // 
             // CurrentToolLabel
             // 
             this.CurrentToolLabel.AutoSize = true;
@@ -510,11 +614,51 @@ namespace atomiki1
             // LeftFiller
             // 
             this.LeftFiller.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.LeftFiller.Controls.Add(this.polygonCornerPanel);
             this.LeftFiller.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftFiller.Location = new System.Drawing.Point(0, 101);
             this.LeftFiller.Name = "LeftFiller";
             this.LeftFiller.Size = new System.Drawing.Size(100, 436);
             this.LeftFiller.TabIndex = 5;
+            // 
+            // polygonCornerPanel
+            // 
+            this.polygonCornerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.polygonCornerPanel.Controls.Add(this.polygonSidesLabel);
+            this.polygonCornerPanel.Controls.Add(this.polygonCornerTrackBar);
+            this.polygonCornerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.polygonCornerPanel.Location = new System.Drawing.Point(0, 0);
+            this.polygonCornerPanel.Name = "polygonCornerPanel";
+            this.polygonCornerPanel.Size = new System.Drawing.Size(100, 47);
+            this.polygonCornerPanel.TabIndex = 0;
+            this.polygonCornerPanel.Visible = false;
+            // 
+            // polygonSidesLabel
+            // 
+            this.polygonSidesLabel.AutoSize = true;
+            this.polygonSidesLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.polygonSidesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.polygonSidesLabel.ForeColor = System.Drawing.Color.White;
+            this.polygonSidesLabel.Location = new System.Drawing.Point(0, 32);
+            this.polygonSidesLabel.Name = "polygonSidesLabel";
+            this.polygonSidesLabel.Size = new System.Drawing.Size(98, 15);
+            this.polygonSidesLabel.TabIndex = 1;
+            this.polygonSidesLabel.Text = "Polygon Sides: 5";
+            this.polygonSidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // polygonCornerTrackBar
+            // 
+            this.polygonCornerTrackBar.Cursor = System.Windows.Forms.Cursors.NoMoveHoriz;
+            this.polygonCornerTrackBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.polygonCornerTrackBar.Location = new System.Drawing.Point(0, 0);
+            this.polygonCornerTrackBar.Maximum = 12;
+            this.polygonCornerTrackBar.Minimum = 5;
+            this.polygonCornerTrackBar.Name = "polygonCornerTrackBar";
+            this.polygonCornerTrackBar.Size = new System.Drawing.Size(100, 45);
+            this.polygonCornerTrackBar.TabIndex = 0;
+            this.polygonCornerTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.polygonCornerTrackBar.Value = 5;
+            this.polygonCornerTrackBar.Scroll += new System.EventHandler(this.polygonCornerTrackBar_Scroll);
             // 
             // RightFiller
             // 
@@ -545,30 +689,25 @@ namespace atomiki1
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
-            // brushWidthTrackbar
+            // rightBorderPanel
             // 
-            this.brushWidthTrackbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.brushWidthTrackbar.Cursor = System.Windows.Forms.Cursors.NoMoveVert;
-            this.brushWidthTrackbar.Location = new System.Drawing.Point(213, 0);
-            this.brushWidthTrackbar.Maximum = 26;
-            this.brushWidthTrackbar.Minimum = 5;
-            this.brushWidthTrackbar.Name = "brushWidthTrackbar";
-            this.brushWidthTrackbar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.brushWidthTrackbar.Size = new System.Drawing.Size(45, 71);
-            this.brushWidthTrackbar.TabIndex = 8;
-            this.brushWidthTrackbar.Value = 8;
-            this.brushWidthTrackbar.Scroll += new System.EventHandler(this.brushWidthTrackbar_Scroll);
+            this.rightBorderPanel.BackColor = System.Drawing.Color.White;
+            this.rightBorderPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.rightBorderPanel.Location = new System.Drawing.Point(123, 0);
+            this.rightBorderPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.rightBorderPanel.Name = "rightBorderPanel";
+            this.rightBorderPanel.Size = new System.Drawing.Size(1, 32);
+            this.rightBorderPanel.TabIndex = 2;
             // 
-            // brushThicknessValueLabel
+            // panel3
             // 
-            this.brushThicknessValueLabel.AutoSize = true;
-            this.brushThicknessValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.brushThicknessValueLabel.ForeColor = System.Drawing.Color.White;
-            this.brushThicknessValueLabel.Location = new System.Drawing.Point(209, -1);
-            this.brushThicknessValueLabel.Name = "brushThicknessValueLabel";
-            this.brushThicknessValueLabel.Size = new System.Drawing.Size(46, 16);
-            this.brushThicknessValueLabel.TabIndex = 10;
-            this.brushThicknessValueLabel.Text = "Size: 8";
+            this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel3.Location = new System.Drawing.Point(195, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1, 70);
+            this.panel3.TabIndex = 6;
             // 
             // Shapes
             // 
@@ -592,6 +731,7 @@ namespace atomiki1
             this.FileMenuStrip.ResumeLayout(false);
             this.ToolBoxPanel.ResumeLayout(false);
             this.ToolBoxPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.brushWidthTrackbar)).EndInit();
             this.ToolsLayoutPanel.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.BottomPanel.ResumeLayout(false);
@@ -599,8 +739,11 @@ namespace atomiki1
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.LeftFiller.ResumeLayout(false);
+            this.polygonCornerPanel.ResumeLayout(false);
+            this.polygonCornerPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.polygonCornerTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.brushWidthTrackbar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -629,9 +772,7 @@ namespace atomiki1
         private System.Windows.Forms.Button PolygonSelectorButton;
         private System.Windows.Forms.Label CurrentToolLabel;
         private System.Windows.Forms.Panel panel1;
-        private Panel rightBorderPanel;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Panel panel3;
         private Button EllipseSelectButton;
         private ToolStripMenuItem saveToolStripMenuItem;
         private SaveFileDialog saveFileDialog;
@@ -645,6 +786,16 @@ namespace atomiki1
         private Panel ToolsLayoutPanel;
         private TrackBar brushWidthTrackbar;
         private Label brushThicknessValueLabel;
+        private Button TriangleSelectButton;
+        private Button StarSelectorButton;
+        private Button heartButtonSelector;
+        private Button cubeSelectButton;
+        private Button button1;
+        private Panel polygonCornerPanel;
+        private Label polygonSidesLabel;
+        private TrackBar polygonCornerTrackBar;
+        private Panel panel3;
+        private Panel rightBorderPanel;
     }
 }
 

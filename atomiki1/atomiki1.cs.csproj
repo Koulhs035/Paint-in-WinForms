@@ -119,5 +119,29 @@
   <ItemGroup>
     <None Include="Resources\bucket.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\triangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\triangle1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mouse1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\write.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\write1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cube.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
