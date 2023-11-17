@@ -43,6 +43,7 @@ namespace atomiki1
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ButtonFile = new System.Windows.Forms.Button();
             this.ToolBoxPanel = new System.Windows.Forms.Panel();
+            this.AnnotationTextBox = new System.Windows.Forms.TextBox();
             this.brushThicknessValueLabel = new System.Windows.Forms.Label();
             this.brushWidthTrackbar = new System.Windows.Forms.TrackBar();
             this.ToolsLayoutPanel = new System.Windows.Forms.Panel();
@@ -210,6 +211,7 @@ namespace atomiki1
             // 
             this.ToolBoxPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ToolBoxPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ToolBoxPanel.Controls.Add(this.AnnotationTextBox);
             this.ToolBoxPanel.Controls.Add(this.brushThicknessValueLabel);
             this.ToolBoxPanel.Controls.Add(this.brushWidthTrackbar);
             this.ToolBoxPanel.Controls.Add(this.ToolsLayoutPanel);
@@ -224,6 +226,13 @@ namespace atomiki1
             this.ToolBoxPanel.Name = "ToolBoxPanel";
             this.ToolBoxPanel.Size = new System.Drawing.Size(1063, 72);
             this.ToolBoxPanel.TabIndex = 2;
+            // 
+            // AnnotationTextBox
+            // 
+            this.AnnotationTextBox.Location = new System.Drawing.Point(236, 44);
+            this.AnnotationTextBox.Name = "AnnotationTextBox";
+            this.AnnotationTextBox.Size = new System.Drawing.Size(174, 20);
+            this.AnnotationTextBox.TabIndex = 0;
             // 
             // brushThicknessValueLabel
             // 
@@ -729,7 +738,6 @@ namespace atomiki1
             this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
-            this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
             // 
             // Shapes
             // 
@@ -821,6 +829,7 @@ namespace atomiki1
         private Panel rightBorderPanel;
         private Panel panel2;
         private Button UndoButton;
+        private TextBox AnnotationTextBox;
     }
 }
 

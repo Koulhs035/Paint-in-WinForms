@@ -27,6 +27,7 @@ namespace atomiki1
             Star,
             Heart,
             Cube,
+            Annotate
         }
         DrawingTool curTool = DrawingTool.None;
 
@@ -83,6 +84,24 @@ namespace atomiki1
                 this.fill = fill;
             }
         }
+        private void ShapeDesigner_Load(object sender, EventArgs e)
+        {
+            bitmap = new Bitmap(Canvas.Width, Canvas.Height);
+
+            graphics = Graphics.FromImage(bitmap);
+            graphics.Clear(Color.White);
+
+
+            pen = new Pen(Color.Black, brushThickness);
+            eraser = new Pen(Canvas.BackColor, brushThickness);
+
+            Canvas.Image = bitmap;
+        }
+
+        //
+        //-----------------------Mouse events-----------------------//
+        //
+
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             draw = true;
@@ -173,23 +192,6 @@ namespace atomiki1
             }
         }
 
-        private void ShapeDesigner_Load(object sender, EventArgs e)
-        {
-            bitmap = new Bitmap(Canvas.Width, Canvas.Height);
-
-            graphics = Graphics.FromImage(bitmap);
-            graphics.Clear(Color.White);
-
-
-            pen = new Pen(Color.Black, brushThickness);
-            eraser = new Pen(Canvas.BackColor, brushThickness);
-
-            Canvas.Image = bitmap;
-        }
-
-
-
-        Point lastPoint;
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
 
@@ -209,11 +211,14 @@ namespace atomiki1
 
         }
 
-        //This simply makes the text for the mouse cursor coordinates to empty string
         private void Canvas_MouseLeave(object sender, EventArgs e)
         {
             MouseCoordsLabel.Text = "";
         }
+
+        //
+        //-----------------------Shape designs-----------------------//
+        //
 
         private Rectangle MakeRectangle(Point p1, Point p2)
         {
@@ -482,8 +487,9 @@ namespace atomiki1
         }
 
 
-
+        //
         //-----------------------Strip Menus-----------------------//
+        //
         private void stripMenuExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -505,8 +511,16 @@ namespace atomiki1
         }
 
 
-
-        //-----------------------Brush Tools-----------------------//
+        //
+        //-----------------------Canvas Tools-----------------------//
+        //
+        private void redrawCanvas()
+        {
+            foreach (insertedShape insShape in toolList)
+            {
+                drawShape(insShape.tool, insShape.pen, insShape.brush, insShape.start, insShape.stop, insShape.polygonSides, insShape.fill);
+            }
+        }
 
         // Color picker dialog for the primary color
         private void ColorPicker1_Click(object sender, EventArgs e)
@@ -568,9 +582,71 @@ namespace atomiki1
             eraser.Width = brushThickness;
             brushThicknessValueLabel.Text = "Size: " + brushThickness;
         }
+        int distance = 5;
+        private void Shapes_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (toolList.Count == 0) return; // Check if toolList is empty
+
+            int last = toolList.Count - 1;
+            insertedShape lastShape = toolList[last];
+
+            Point newStartPoint = lastShape.start;
+            Point newStopPoint = lastShape.stop;
+
+            // Check keyboard input and update points accordingly
+            switch (e.KeyData)
+            {
+                case Keys.D:
+                    newStartPoint = new Point(lastShape.start.X + distance, lastShape.start.Y);
+                    newStopPoint = new Point(lastShape.stop.X + distance, lastShape.stop.Y);
+                    break;
+                case Keys.A:
+                    newStartPoint = new Point(lastShape.start.X - distance, lastShape.start.Y);
+                    newStopPoint = new Point(lastShape.stop.X - distance, lastShape.stop.Y);
+                    break;
+                case Keys.W:
+                    newStartPoint = new Point(lastShape.start.X, lastShape.start.Y - distance);
+                    newStopPoint = new Point(lastShape.stop.X, lastShape.stop.Y - distance);
+                    break;
+                case Keys.S:
+                    newStartPoint = new Point(lastShape.start.X, lastShape.start.Y + distance);
+                    newStopPoint = new Point(lastShape.stop.X, lastShape.stop.Y + distance);
+                    break;
+                case Keys.Q:
+                    newStartPoint = new Point(lastShape.start.X + distance, lastShape.start.Y + distance);
+                    newStopPoint = new Point(lastShape.stop.X - distance, lastShape.stop.Y - distance);
+                    break;
+                case Keys.E:
+                    newStartPoint = new Point(lastShape.start.X - distance, lastShape.start.Y - distance);
+                    newStopPoint = new Point(lastShape.stop.X + distance, lastShape.stop.Y + distance);
+                    break;
+            }
 
 
+            // Create updated shape with the new points
+            insertedShape updatedShape = new insertedShape(
+                lastShape.tool,
+                newStartPoint,
+                newStopPoint,
+                lastShape.pen.Color,
+                ((SolidBrush)lastShape.brush).Color,
+                lastShape.polygonSides,
+                lastShape.thickness,
+                lastShape.fill
+            );
+
+            // Update the last shape in toolList with the updated shape
+
+            insertedShape eraseShape = toolList[last];
+            toolList[last] = updatedShape;
+            drawShape(eraseShape.tool, eraser, brush, eraseShape.start, eraseShape.stop, eraseShape.polygonSides, false);
+            redrawCanvas();
+            Canvas.Refresh();
+        }
+
+        //
         //-----------------------Tool Picker-----------------------//
+        //
 
         private void RectangleSelectButton_Click(object sender, EventArgs e)
         {
@@ -676,87 +752,6 @@ namespace atomiki1
 
         }
 
-        int distance = 5;
-
-        private void Canvas_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-      
-        }
-
-        private void redrawCanvas()
-        {
-            foreach (insertedShape insShape in toolList)
-            {
-                drawShape(insShape.tool, insShape.pen, insShape.brush, insShape.start, insShape.stop, insShape.polygonSides, insShape.fill);
-            }
-        }
-
-        private void Shapes_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (toolList.Count == 0) return; // Check if toolList is empty
-
-            int last = toolList.Count - 1;
-            insertedShape lastShape = toolList[last];
-           
-            Point newStartPoint = lastShape.start;
-            Point newStopPoint = lastShape.stop;
-
-            // Check keyboard input and update points accordingly
-            switch (e.KeyData)
-            {
-                case Keys.D:
-                    newStartPoint = new Point(lastShape.start.X + distance, lastShape.start.Y);
-                    newStopPoint = new Point(lastShape.stop.X + distance, lastShape.stop.Y);
-                    break;
-                case Keys.A:
-                    newStartPoint = new Point(lastShape.start.X - distance, lastShape.start.Y);
-                    newStopPoint = new Point(lastShape.stop.X - distance, lastShape.stop.Y);
-                    break;
-                case Keys.W:
-                    newStartPoint = new Point(lastShape.start.X, lastShape.start.Y - distance);
-                    newStopPoint = new Point(lastShape.stop.X, lastShape.stop.Y - distance);
-                    break;
-                case Keys.S:
-                    newStartPoint = new Point(lastShape.start.X, lastShape.start.Y + distance);
-                    newStopPoint = new Point(lastShape.stop.X, lastShape.stop.Y + distance);
-                    break;
-                case Keys.Q:
-                    newStartPoint = new Point(lastShape.start.X + distance, lastShape.start.Y + distance);
-                    newStopPoint = new Point(lastShape.stop.X - distance, lastShape.stop.Y - distance);
-                    break;
-                case Keys.E:
-                    newStartPoint = new Point(lastShape.start.X - distance, lastShape.start.Y - distance);
-                    newStopPoint = new Point(lastShape.stop.X + distance, lastShape.stop.Y+ distance);
-                    break;
-            }
-
-
-            // Create updated shape with the new points
-            insertedShape updatedShape = new insertedShape(
-                lastShape.tool,
-                newStartPoint,
-                newStopPoint,
-                lastShape.pen.Color,
-                ((SolidBrush)lastShape.brush).Color,
-                lastShape.polygonSides,
-                lastShape.thickness,
-                lastShape.fill
-            );
-
-            // Update the last shape in toolList with the updated shape
-
-            insertedShape eraseShape = toolList[last];
-            toolList[last]=updatedShape;
-            drawShape(eraseShape.tool, eraser, brush, eraseShape.start, eraseShape.stop, eraseShape.polygonSides, false);
-            redrawCanvas();
-            Canvas.Refresh();
-        }
-
-        private void annotateSelectButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void LineSelectorButton_Click(object sender, EventArgs e)
         {
             polygonCornerPanel.Hide();
@@ -771,6 +766,13 @@ namespace atomiki1
 
             curTool = DrawingTool.Ellipse;
             CurrentToolLabel.Text = "Current Tool: Ellipse";
+        }
+        private void annotateSelectButton_Click(object sender, EventArgs e)
+        {
+            polygonCornerPanel.Hide();
+            AnnotationTextBox.Show();
+            curTool = DrawingTool.Annotate;
+            CurrentToolLabel.Text = "Current Tool: Annotate";
         }
     }
 }
