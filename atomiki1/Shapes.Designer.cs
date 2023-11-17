@@ -43,13 +43,17 @@ namespace atomiki1
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ButtonFile = new System.Windows.Forms.Button();
             this.ToolBoxPanel = new System.Windows.Forms.Panel();
+            this.polygonCornerPanel = new System.Windows.Forms.Panel();
+            this.polygonCornerTrackBar = new System.Windows.Forms.TrackBar();
+            this.polygonSidesLabel = new System.Windows.Forms.Label();
+            this.fontSelector = new System.Windows.Forms.Button();
+            this.AnnotationLabel = new System.Windows.Forms.Label();
             this.AnnotationTextBox = new System.Windows.Forms.TextBox();
             this.brushThicknessValueLabel = new System.Windows.Forms.Label();
             this.brushWidthTrackbar = new System.Windows.Forms.TrackBar();
             this.ToolsLayoutPanel = new System.Windows.Forms.Panel();
             this.annotateSelectButton = new System.Windows.Forms.Button();
             this.FillSelectButton = new System.Windows.Forms.Button();
-            this.EraserSelectButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.LineSelectorButton = new System.Windows.Forms.Button();
@@ -75,24 +79,21 @@ namespace atomiki1
             this.CurrentToolLabel = new System.Windows.Forms.Label();
             this.ColorPickerDialog = new System.Windows.Forms.ColorDialog();
             this.LeftFiller = new System.Windows.Forms.Panel();
-            this.polygonCornerPanel = new System.Windows.Forms.Panel();
-            this.polygonSidesLabel = new System.Windows.Forms.Label();
-            this.polygonCornerTrackBar = new System.Windows.Forms.TrackBar();
             this.RightFiller = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.Canvas = new System.Windows.Forms.PictureBox();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.TopPanelTools.SuspendLayout();
             this.FileMenuStrip.SuspendLayout();
             this.ToolBoxPanel.SuspendLayout();
+            this.polygonCornerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.polygonCornerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brushWidthTrackbar)).BeginInit();
             this.ToolsLayoutPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.LeftFiller.SuspendLayout();
-            this.polygonCornerPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.polygonCornerTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -211,6 +212,9 @@ namespace atomiki1
             // 
             this.ToolBoxPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ToolBoxPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ToolBoxPanel.Controls.Add(this.polygonCornerPanel);
+            this.ToolBoxPanel.Controls.Add(this.fontSelector);
+            this.ToolBoxPanel.Controls.Add(this.AnnotationLabel);
             this.ToolBoxPanel.Controls.Add(this.AnnotationTextBox);
             this.ToolBoxPanel.Controls.Add(this.brushThicknessValueLabel);
             this.ToolBoxPanel.Controls.Add(this.brushWidthTrackbar);
@@ -227,12 +231,87 @@ namespace atomiki1
             this.ToolBoxPanel.Size = new System.Drawing.Size(1063, 72);
             this.ToolBoxPanel.TabIndex = 2;
             // 
+            // polygonCornerPanel
+            // 
+            this.polygonCornerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.polygonCornerPanel.Controls.Add(this.polygonCornerTrackBar);
+            this.polygonCornerPanel.Controls.Add(this.polygonSidesLabel);
+            this.polygonCornerPanel.Location = new System.Drawing.Point(274, 27);
+            this.polygonCornerPanel.Name = "polygonCornerPanel";
+            this.polygonCornerPanel.Size = new System.Drawing.Size(100, 61);
+            this.polygonCornerPanel.TabIndex = 0;
+            this.polygonCornerPanel.Visible = false;
+            // 
+            // polygonCornerTrackBar
+            // 
+            this.polygonCornerTrackBar.Cursor = System.Windows.Forms.Cursors.NoMoveHoriz;
+            this.polygonCornerTrackBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.polygonCornerTrackBar.LargeChange = 3;
+            this.polygonCornerTrackBar.Location = new System.Drawing.Point(0, 16);
+            this.polygonCornerTrackBar.Maximum = 12;
+            this.polygonCornerTrackBar.Minimum = 5;
+            this.polygonCornerTrackBar.Name = "polygonCornerTrackBar";
+            this.polygonCornerTrackBar.Size = new System.Drawing.Size(100, 45);
+            this.polygonCornerTrackBar.TabIndex = 0;
+            this.polygonCornerTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.polygonCornerTrackBar.Value = 5;
+            this.polygonCornerTrackBar.Scroll += new System.EventHandler(this.polygonCornerTrackBar_Scroll);
+            // 
+            // polygonSidesLabel
+            // 
+            this.polygonSidesLabel.AutoSize = true;
+            this.polygonSidesLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.polygonSidesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.polygonSidesLabel.ForeColor = System.Drawing.Color.White;
+            this.polygonSidesLabel.Location = new System.Drawing.Point(0, 0);
+            this.polygonSidesLabel.Name = "polygonSidesLabel";
+            this.polygonSidesLabel.Size = new System.Drawing.Size(98, 15);
+            this.polygonSidesLabel.TabIndex = 1;
+            this.polygonSidesLabel.Text = "Polygon Sides: 5";
+            this.polygonSidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // fontSelector
+            // 
+            this.fontSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.fontSelector.BackgroundImage = global::atomiki1.Properties.Resources.font;
+            this.fontSelector.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.fontSelector.FlatAppearance.BorderSize = 0;
+            this.fontSelector.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fontSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fontSelector.ForeColor = System.Drawing.Color.White;
+            this.fontSelector.Location = new System.Drawing.Point(322, 19);
+            this.fontSelector.Name = "fontSelector";
+            this.fontSelector.Size = new System.Drawing.Size(26, 23);
+            this.fontSelector.TabIndex = 12;
+            this.fontSelector.UseVisualStyleBackColor = true;
+            this.fontSelector.Visible = false;
+            this.fontSelector.Click += new System.EventHandler(this.fontSelector_Click);
+            // 
+            // AnnotationLabel
+            // 
+            this.AnnotationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.AnnotationLabel.AutoSize = true;
+            this.AnnotationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AnnotationLabel.ForeColor = System.Drawing.Color.White;
+            this.AnnotationLabel.Location = new System.Drawing.Point(236, 25);
+            this.AnnotationLabel.Name = "AnnotationLabel";
+            this.AnnotationLabel.Size = new System.Drawing.Size(63, 16);
+            this.AnnotationLabel.TabIndex = 11;
+            this.AnnotationLabel.Text = "Annotate:";
+            this.AnnotationLabel.Visible = false;
+            // 
             // AnnotationTextBox
             // 
+            this.AnnotationTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.AnnotationTextBox.Location = new System.Drawing.Point(236, 44);
             this.AnnotationTextBox.Name = "AnnotationTextBox";
-            this.AnnotationTextBox.Size = new System.Drawing.Size(174, 20);
+            this.AnnotationTextBox.Size = new System.Drawing.Size(112, 20);
             this.AnnotationTextBox.TabIndex = 0;
+            this.AnnotationTextBox.Visible = false;
+            this.AnnotationTextBox.Click += new System.EventHandler(this.AnnotationTextBox_Click);
+            this.AnnotationTextBox.TextChanged += new System.EventHandler(this.AnnotationTextBox_TextChanged);
+            this.AnnotationTextBox.MouseLeave += new System.EventHandler(this.AnnotationTextBox_MouseLeave);
             // 
             // brushThicknessValueLabel
             // 
@@ -267,7 +346,6 @@ namespace atomiki1
             this.ToolsLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ToolsLayoutPanel.Controls.Add(this.annotateSelectButton);
             this.ToolsLayoutPanel.Controls.Add(this.FillSelectButton);
-            this.ToolsLayoutPanel.Controls.Add(this.EraserSelectButton);
             this.ToolsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.ToolsLayoutPanel.Location = new System.Drawing.Point(196, 0);
             this.ToolsLayoutPanel.Name = "ToolsLayoutPanel";
@@ -283,7 +361,7 @@ namespace atomiki1
             this.annotateSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.annotateSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.annotateSelectButton.ForeColor = System.Drawing.Color.White;
-            this.annotateSelectButton.Location = new System.Drawing.Point(5, 43);
+            this.annotateSelectButton.Location = new System.Drawing.Point(5, 32);
             this.annotateSelectButton.Name = "annotateSelectButton";
             this.annotateSelectButton.Size = new System.Drawing.Size(18, 22);
             this.annotateSelectButton.TabIndex = 7;
@@ -299,28 +377,12 @@ namespace atomiki1
             this.FillSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FillSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FillSelectButton.ForeColor = System.Drawing.Color.White;
-            this.FillSelectButton.Location = new System.Drawing.Point(5, -1);
+            this.FillSelectButton.Location = new System.Drawing.Point(5, 5);
             this.FillSelectButton.Name = "FillSelectButton";
             this.FillSelectButton.Size = new System.Drawing.Size(18, 21);
             this.FillSelectButton.TabIndex = 6;
             this.FillSelectButton.UseVisualStyleBackColor = true;
             this.FillSelectButton.Click += new System.EventHandler(this.FillSelectButton_Click);
-            // 
-            // EraserSelectButton
-            // 
-            this.EraserSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.EraserSelectButton.BackgroundImage = global::atomiki1.Properties.Resources.eraser;
-            this.EraserSelectButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.EraserSelectButton.FlatAppearance.BorderSize = 0;
-            this.EraserSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EraserSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EraserSelectButton.ForeColor = System.Drawing.Color.White;
-            this.EraserSelectButton.Location = new System.Drawing.Point(5, 18);
-            this.EraserSelectButton.Name = "EraserSelectButton";
-            this.EraserSelectButton.Size = new System.Drawing.Size(18, 22);
-            this.EraserSelectButton.TabIndex = 5;
-            this.EraserSelectButton.UseVisualStyleBackColor = true;
-            this.EraserSelectButton.Click += new System.EventHandler(this.EraserSelectButton_Click);
             // 
             // panel3
             // 
@@ -663,52 +725,11 @@ namespace atomiki1
             // LeftFiller
             // 
             this.LeftFiller.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.LeftFiller.Controls.Add(this.polygonCornerPanel);
             this.LeftFiller.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftFiller.Location = new System.Drawing.Point(0, 101);
             this.LeftFiller.Name = "LeftFiller";
             this.LeftFiller.Size = new System.Drawing.Size(100, 436);
             this.LeftFiller.TabIndex = 5;
-            // 
-            // polygonCornerPanel
-            // 
-            this.polygonCornerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.polygonCornerPanel.Controls.Add(this.polygonSidesLabel);
-            this.polygonCornerPanel.Controls.Add(this.polygonCornerTrackBar);
-            this.polygonCornerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.polygonCornerPanel.Location = new System.Drawing.Point(0, 0);
-            this.polygonCornerPanel.Name = "polygonCornerPanel";
-            this.polygonCornerPanel.Size = new System.Drawing.Size(100, 47);
-            this.polygonCornerPanel.TabIndex = 0;
-            this.polygonCornerPanel.Visible = false;
-            // 
-            // polygonSidesLabel
-            // 
-            this.polygonSidesLabel.AutoSize = true;
-            this.polygonSidesLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.polygonSidesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.polygonSidesLabel.ForeColor = System.Drawing.Color.White;
-            this.polygonSidesLabel.Location = new System.Drawing.Point(0, 32);
-            this.polygonSidesLabel.Name = "polygonSidesLabel";
-            this.polygonSidesLabel.Size = new System.Drawing.Size(98, 15);
-            this.polygonSidesLabel.TabIndex = 1;
-            this.polygonSidesLabel.Text = "Polygon Sides: 5";
-            this.polygonSidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // polygonCornerTrackBar
-            // 
-            this.polygonCornerTrackBar.Cursor = System.Windows.Forms.Cursors.NoMoveHoriz;
-            this.polygonCornerTrackBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.polygonCornerTrackBar.LargeChange = 3;
-            this.polygonCornerTrackBar.Location = new System.Drawing.Point(0, 0);
-            this.polygonCornerTrackBar.Maximum = 12;
-            this.polygonCornerTrackBar.Minimum = 5;
-            this.polygonCornerTrackBar.Name = "polygonCornerTrackBar";
-            this.polygonCornerTrackBar.Size = new System.Drawing.Size(100, 45);
-            this.polygonCornerTrackBar.TabIndex = 0;
-            this.polygonCornerTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.polygonCornerTrackBar.Value = 5;
-            this.polygonCornerTrackBar.Scroll += new System.EventHandler(this.polygonCornerTrackBar_Scroll);
             // 
             // RightFiller
             // 
@@ -752,6 +773,7 @@ namespace atomiki1
             this.Controls.Add(this.ToolBoxPanel);
             this.Controls.Add(this.TopPanelTools);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "Shapes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -763,6 +785,9 @@ namespace atomiki1
             this.FileMenuStrip.ResumeLayout(false);
             this.ToolBoxPanel.ResumeLayout(false);
             this.ToolBoxPanel.PerformLayout();
+            this.polygonCornerPanel.ResumeLayout(false);
+            this.polygonCornerPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.polygonCornerTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brushWidthTrackbar)).EndInit();
             this.ToolsLayoutPanel.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -771,10 +796,6 @@ namespace atomiki1
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.LeftFiller.ResumeLayout(false);
-            this.polygonCornerPanel.ResumeLayout(false);
-            this.polygonCornerPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.polygonCornerTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -813,7 +834,6 @@ namespace atomiki1
         private Button DiamondSelectButton;
         private Button CrossSelectButton;
         private Button FillSelectButton;
-        private Button EraserSelectButton;
         private Panel ToolsLayoutPanel;
         private TrackBar brushWidthTrackbar;
         private Label brushThicknessValueLabel;
@@ -822,7 +842,6 @@ namespace atomiki1
         private Button heartButtonSelector;
         private Button cubeSelectButton;
         private Button annotateSelectButton;
-        private Panel polygonCornerPanel;
         private Label polygonSidesLabel;
         private TrackBar polygonCornerTrackBar;
         private Panel panel3;
@@ -830,6 +849,10 @@ namespace atomiki1
         private Panel panel2;
         private Button UndoButton;
         private TextBox AnnotationTextBox;
+        private Label AnnotationLabel;
+        private Button fontSelector;
+        private FontDialog fontDialog1;
+        private Panel polygonCornerPanel;
     }
 }
 

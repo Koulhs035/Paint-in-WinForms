@@ -14,7 +14,6 @@ namespace atomiki1
         enum DrawingTool
         {
             None,
-            Eraser,
             Line,
             Rectangle,
             Ellipse,
@@ -47,12 +46,14 @@ namespace atomiki1
 
         Point start, stop;
         List<Point> points = new List<Point>();
-        Pen pen, eraser;
-        Brush brush = new SolidBrush(Color.Black);
+        Pen pen;
+        Brush brush = new SolidBrush(Color.White);
         int brushThickness = 8;
         bool draw;
         bool fill = false;
         int polygonSides = 5;
+        string text, tempText;
+        Font font = Shapes.DefaultFont;
 
         private struct insertedShape
         {
@@ -62,6 +63,8 @@ namespace atomiki1
             public Brush brush;
             public int polygonSides, thickness; // Assign a default value here
             public bool fill;
+            public string text;
+            public Font font;
 
             // Constructor for insertedShape struct
             public insertedShape(
@@ -72,7 +75,9 @@ namespace atomiki1
                 Color brushColor,
                 int polygonSides,
                 int penThickness,
-                bool fill)
+                bool fill,
+                string text,
+                Font font)
             {
                 this.tool = tool;
                 this.start = start;
@@ -82,6 +87,8 @@ namespace atomiki1
                 this.brush = new SolidBrush(brushColor); // Initializing Brush with provided color
                 this.polygonSides = polygonSides;
                 this.fill = fill;
+                this.text = text;
+                this.font = font;
             }
         }
         private void ShapeDesigner_Load(object sender, EventArgs e)
@@ -93,7 +100,6 @@ namespace atomiki1
 
 
             pen = new Pen(Color.Black, brushThickness);
-            eraser = new Pen(Canvas.BackColor, brushThickness);
 
             Canvas.Image = bitmap;
         }
@@ -107,18 +113,20 @@ namespace atomiki1
             draw = true;
             start = e.Location;
             points.Add(e.Location);
+
         }
 
         private void Canvas_MouseUp(object sender, MouseEventArgs e)
         {
             draw = false;
             stop = e.Location;
-            drawShape(curTool, pen, brush, start, stop, polygonSides, fill);
-            insertedShape shape = new insertedShape(curTool, start, stop, pen.Color, ColorPicker2.BackColor, polygonSides, brushThickness, fill);
+            drawShape(curTool, pen, brush, start, stop, polygonSides, fill, text, font);
+            text = tempText;
+            insertedShape shape = new insertedShape(curTool, start, stop, pen.Color, ColorPicker2.BackColor, polygonSides, brushThickness, fill, text, font);
             toolList.Add(shape);
         }
 
-        private void drawShape(DrawingTool tool, Pen curPen, Brush curBrush, Point startP, Point stopP, int sides, bool fillShape)
+        private void drawShape(DrawingTool tool, Pen curPen, Brush curBrush, Point startP, Point stopP, int sides, bool fillShape, string insText, Font insFont)
         {
 
             switch (tool)
@@ -144,8 +152,9 @@ namespace atomiki1
 
                 case DrawingTool.Ellipse:
                     graphics.DrawEllipse(curPen, MakeRectangle(startP, stopP));
-                    if (fillShape)
-                        graphics.FillEllipse(curBrush, MakeRectangle(startP, stopP));
+
+                    if (fillShape) { graphics.FillEllipse(curBrush, MakeRectangle(startP, stopP)); }
+
                     break;
 
                 case DrawingTool.Circle:
@@ -160,33 +169,28 @@ namespace atomiki1
                     break;
 
                 case DrawingTool.Diamond:
-                    createDiamond(curPen, startP, stopP, false);
-                    if (fillShape)
-                        createDiamond(curPen, startP, stopP, true);
+                    createDiamond(curPen, curBrush, startP, stopP, fillShape);
+
                     break;
 
                 case DrawingTool.Cross:
-                    createCross(curPen, startP, stopP, false);
-                    if (fillShape)
-                        createCross(curPen, startP, stopP, true);
+                    createCross(curPen, curBrush, startP, stopP, fillShape);
                     break;
                 case DrawingTool.Triangle:
-                    createTriangle(curPen, startP, stopP, false);
-                    if (fillShape)
-                        createTriangle(pen, startP, stopP, true);
+                    createTriangle(curPen, curBrush, startP, stopP, fillShape);
                     break;
                 case DrawingTool.Star:
-                    createStar(curPen, startP, stopP, false);
-                    if (fillShape)
-                        createStar(curPen, startP, stopP, true);
+                    createStar(curPen, curBrush, startP, stopP, sides, fillShape);
+
                     break;
                 case DrawingTool.Heart:
-                    createHeart(curPen, startP, stopP, false);
-                    if (fillShape)
-                        createHeart(curPen, startP, stopP, true);
+                    createHeart(curPen, curBrush, startP, stopP, fillShape);
                     break;
                 case DrawingTool.Cube:
                     createCube(curPen, startP, stopP);
+                    break;
+                case DrawingTool.Annotate:
+                    graphics.DrawString(insText, insFont, brush, stopP);
                     break;
 
             }
@@ -195,19 +199,14 @@ namespace atomiki1
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
 
-            if (draw)
-            {
-               redrawCanvas();
-
-                drawShape(curTool, eraser, brush, start, stop, polygonSides, false);
-                drawShape(curTool, pen, brush, start, e.Location, polygonSides, false);
-                stop = e.Location;
-
-            }
-
+            MouseCoordsLabel.Text = e.X + ", " + e.Y + "px";
+            if (!draw) return;
+            graphics.Clear(Color.White);
+            redrawCanvas();
+            drawShape(curTool, pen, brush, start, e.Location, polygonSides, fill, text, font);
+            stop = e.Location;
             Canvas.Refresh();
             //Changes the Mouse coordinates label
-            MouseCoordsLabel.Text = e.X + ", " + e.Y + "px";
 
         }
 
@@ -253,7 +252,7 @@ namespace atomiki1
 
             float r = (float)Math.Sqrt(Math.Pow((start.X - stop.X), 2) + Math.Pow((start.Y - stop.Y), 2)) / 2;
 
-            for (int a = 0; a < polygonSides; a++)
+            for (int a = 0; a < sides; a++)
             {
                 shape[a] = new PointF(
                     x0 + r * (float)Math.Cos(a * angle * Math.PI / 180f),
@@ -262,7 +261,7 @@ namespace atomiki1
             return shape;
         }
 
-        private void createDiamond(Pen penUsed, Point start, Point stop, bool drawFill)
+        private void createDiamond(Pen penUsed, Brush brushUsed, Point start, Point stop, bool drawFill)
         {
             // Find the center
             var centerX = (start.X + stop.X) / 2;
@@ -282,13 +281,13 @@ namespace atomiki1
                 using (GraphicsPath path = new GraphicsPath())
                 {
                     path.AddPolygon(diamond);
-                    graphics.FillPolygon(brush, diamond);
+                    graphics.FillPolygon(brushUsed, diamond);
                     graphics.DrawPolygon(penUsed, diamond);
                 }
             }
         }
 
-        private void createTriangle(Pen penUsed, Point start, Point stop, bool drawFill)
+        private void createTriangle(Pen penUsed, Brush brushUsed, Point start, Point stop, bool drawFill)
         {
             // Find the center
             var centerX = (start.X + stop.X) / 2;
@@ -307,13 +306,13 @@ namespace atomiki1
                 using (GraphicsPath path = new GraphicsPath())
                 {
                     path.AddPolygon(triangle);
-                    graphics.FillPolygon(brush, triangle);
+                    graphics.FillPolygon(brushUsed, triangle);
                     graphics.DrawPolygon(penUsed, triangle);
                 }
             }
         }
 
-        private void createCross(Pen penUsed, Point start, Point stop, bool drawFill)
+        private void createCross(Pen penUsed, Brush brushUsed, Point start, Point stop, bool drawFill)
         {
             int minX = Math.Min(start.X, stop.X);
             int minY = Math.Min(start.Y, stop.Y);
@@ -348,16 +347,15 @@ namespace atomiki1
                 using (GraphicsPath path = new GraphicsPath())
                 {
                     path.AddPolygon(crossPoints);
-                    graphics.FillPolygon(brush, crossPoints); // Fill using the Point[] array directly
+                    graphics.FillPolygon(brushUsed, crossPoints); // Fill using the Point[] array directly
                     graphics.DrawPolygon(penUsed, crossPoints);   // Draw the outline
                 }
             }
 
         }
 
-        private void createStar(Pen penUsed, Point start, Point stop, bool drawFill)
+        private void createStar(Pen penUsed, Brush brushUsed, Point start, Point stop, int numPoints, bool drawFill)
         {
-            int numPoints = 5;
 
             int minX = Math.Min(start.X, stop.X);
             int minY = Math.Min(start.Y, stop.Y);
@@ -391,13 +389,13 @@ namespace atomiki1
                 using (GraphicsPath path = new GraphicsPath())
                 {
                     path.AddPolygon(starPoints);
-                    graphics.FillPolygon(brush, starPoints); // Fill using the Point[] array directly
+                    graphics.FillPolygon(brushUsed, starPoints); // Fill using the Point[] array directly
                     graphics.DrawPolygon(penUsed, starPoints); // Draw the outline
                 }
             }
         }
 
-        private void createHeart(Pen penUsed, Point start, Point stop, bool drawFill)
+        private void createHeart(Pen penUsed, Brush brushUsed, Point start, Point stop, bool drawFill)
         {
             int minX = Math.Min(start.X, stop.X);
             int minY = Math.Min(start.Y, stop.Y);
@@ -433,7 +431,7 @@ namespace atomiki1
                 {
                     path.AddBezier(heartPoints[0], heartPoints[1], heartPoints[2], heartPoints[3]);
                     path.AddBezier(heartPoints[3], heartPoints[4], heartPoints[5], heartPoints[6]);
-                    graphics.FillPath(brush, path); // Fill using the GraphicsPath
+                    graphics.FillPath(brushUsed, path); // Fill using the GraphicsPath
                     graphics.DrawPath(penUsed, path); // Draw the outline
                 }
             }
@@ -518,7 +516,7 @@ namespace atomiki1
         {
             foreach (insertedShape insShape in toolList)
             {
-                drawShape(insShape.tool, insShape.pen, insShape.brush, insShape.start, insShape.stop, insShape.polygonSides, insShape.fill);
+                drawShape(insShape.tool, insShape.pen, insShape.brush, insShape.start, insShape.stop, insShape.polygonSides, insShape.fill, insShape.text, insShape.font);
             }
         }
 
@@ -529,7 +527,6 @@ namespace atomiki1
             {
                 ColorPicker1.BackColor = ColorPickerDialog.Color;
                 pen.Color = ColorPickerDialog.Color;
-                brush = new SolidBrush(ColorPickerDialog.Color);
             }
         }
 
@@ -539,6 +536,7 @@ namespace atomiki1
             if (ColorPickerDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ColorPicker2.BackColor = ColorPickerDialog.Color;
+                brush = new SolidBrush(ColorPickerDialog.Color);
             }
         }
 
@@ -548,11 +546,11 @@ namespace atomiki1
             // Switch the background colors
             ColorPicker1.BackColor = ColorPicker2.BackColor;
             ColorPicker2.BackColor = tempColor;
+            brush = new SolidBrush(tempColor);
 
             // And switch the pen color
             pen.Color = ColorPicker1.BackColor;
         }
-
 
         private void ClearCanvas_Click(object sender, EventArgs e)
         {
@@ -579,15 +577,14 @@ namespace atomiki1
         {
             brushThickness = brushWidthTrackbar.Value;
             pen.Width = brushThickness;
-            eraser.Width = brushThickness;
             brushThicknessValueLabel.Text = "Size: " + brushThickness;
         }
         int distance = 5;
         private void Shapes_KeyDown(object sender, KeyEventArgs e)
         {
-            if (toolList.Count == 0) return; // Check if toolList is empty
 
             int last = toolList.Count - 1;
+            if (toolList.Count == 0) return; // Check if toolList is empty
             insertedShape lastShape = toolList[last];
 
             Point newStartPoint = lastShape.start;
@@ -632,16 +629,17 @@ namespace atomiki1
                 ((SolidBrush)lastShape.brush).Color,
                 lastShape.polygonSides,
                 lastShape.thickness,
-                lastShape.fill
-            );
+                lastShape.fill,
+                lastShape.text,
+                lastShape.font
+            ); ;
 
             // Update the last shape in toolList with the updated shape
 
-            insertedShape eraseShape = toolList[last];
-            toolList[last] = updatedShape;
-            drawShape(eraseShape.tool, eraser, brush, eraseShape.start, eraseShape.stop, eraseShape.polygonSides, false);
-            redrawCanvas();
             Canvas.Refresh();
+            toolList[last] = updatedShape;
+            graphics.Clear(Color.White);
+            redrawCanvas();
         }
 
         //
@@ -650,6 +648,11 @@ namespace atomiki1
 
         private void RectangleSelectButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
+            polygonCornerPanel.Hide();
+            hideAnnotation();
+
             curTool = DrawingTool.Rectangle;
             CurrentToolLabel.Text = "Current Tool: Rectangle";
         }
@@ -657,14 +660,21 @@ namespace atomiki1
 
         private void PolygonSelectorButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
+            hideAnnotation();
+
             curTool = DrawingTool.Polygon;
             polygonCornerPanel.Show();
-            CurrentToolLabel.Text = "Current Tool: Polygon";
+            CurrentToolLabel.Text = "Polygon Sides: " + polygonSides;
         }
 
         private void circleSelectButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
             polygonCornerPanel.Hide();
+            hideAnnotation();
 
             curTool = DrawingTool.Circle;
             CurrentToolLabel.Text = "Current Tool: Circle";
@@ -672,7 +682,10 @@ namespace atomiki1
 
         private void SquareSelectButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
             polygonCornerPanel.Hide();
+            hideAnnotation();
 
             curTool = DrawingTool.Square;
             CurrentToolLabel.Text = "Current Tool: Square";
@@ -680,7 +693,10 @@ namespace atomiki1
 
         private void Diamond_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
             polygonCornerPanel.Hide();
+            hideAnnotation();
 
             curTool = DrawingTool.Diamond;
             CurrentToolLabel.Text = "Current Tool: Diamond";
@@ -688,22 +704,22 @@ namespace atomiki1
 
         private void CrossSelectButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
             polygonCornerPanel.Hide();
+            hideAnnotation();
 
             curTool = DrawingTool.Cross;
             CurrentToolLabel.Text = "Current Tool: Cross";
         }
 
-        private void EraserSelectButton_Click(object sender, EventArgs e)
-        {
-            polygonCornerPanel.Hide();
-
-            curTool = DrawingTool.Eraser;
-            CurrentToolLabel.Text = "Current Tool: Eraser";
-        }
+   
 
         private void TriangleSelectButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
+            hideAnnotation();
             polygonCornerPanel.Hide();
 
             curTool = DrawingTool.Triangle;
@@ -712,7 +728,11 @@ namespace atomiki1
 
         private void StarSelectorButton_Click(object sender, EventArgs e)
         {
-            polygonCornerPanel.Hide();
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
+            hideAnnotation();
+            polygonCornerPanel.Show();
+            polygonSidesLabel.Text = "Star Corners: " + polygonSides;
 
             curTool = DrawingTool.Star;
             CurrentToolLabel.Text = "Current Tool: Star";
@@ -720,6 +740,9 @@ namespace atomiki1
 
         private void heartButtonSelector_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
+            hideAnnotation();
             polygonCornerPanel.Hide();
 
             curTool = DrawingTool.Heart;
@@ -728,6 +751,9 @@ namespace atomiki1
 
         private void cubeSelectButton_Click(object sender, EventArgs e)
         {
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
+            hideAnnotation();
             polygonCornerPanel.Hide();
 
             curTool = DrawingTool.Cube;
@@ -736,6 +762,7 @@ namespace atomiki1
 
         private void polygonCornerTrackBar_Scroll(object sender, EventArgs e)
         {
+
             polygonSides = polygonCornerTrackBar.Value;
             polygonSidesLabel.Text = "Polygon Sides: " + polygonSides;
         }
@@ -755,24 +782,75 @@ namespace atomiki1
         private void LineSelectorButton_Click(object sender, EventArgs e)
         {
             polygonCornerPanel.Hide();
+            hideAnnotation();
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
 
             curTool = DrawingTool.Line;
             CurrentToolLabel.Text = "Current Tool: Line";
         }
 
+
         private void EllipseSelectButton_Click(object sender, EventArgs e)
         {
+            hideAnnotation();
             polygonCornerPanel.Hide();
+            brushWidthTrackbar.Show();
+            brushThicknessValueLabel.Show();
 
             curTool = DrawingTool.Ellipse;
             CurrentToolLabel.Text = "Current Tool: Ellipse";
         }
+
+
+        private void fontSelector_Click(object sender, EventArgs e)
+        {
+            if (fontDialog1.ShowDialog() == DialogResult.OK)
+            {
+                font = fontDialog1.Font;
+            }
+        }
+
+
+        // Annotation functions
         private void annotateSelectButton_Click(object sender, EventArgs e)
         {
             polygonCornerPanel.Hide();
             AnnotationTextBox.Show();
+            fontSelector.Show();
+            AnnotationLabel.Show();
+
+            brushWidthTrackbar.Hide();
+            brushThicknessValueLabel.Hide();
+
             curTool = DrawingTool.Annotate;
             CurrentToolLabel.Text = "Current Tool: Annotate";
         }
+        private void AnnotationTextBox_TextChanged(object sender, EventArgs e)
+        {
+            tempText = AnnotationTextBox.Text;
+
+        }
+
+        private void AnnotationTextBox_Click(object sender, EventArgs e)
+        {
+            AnnotationTextBox.ReadOnly = false;
+            this.KeyPreview = false;
+        }
+
+        private void AnnotationTextBox_MouseLeave(object sender, EventArgs e)
+        {
+            AnnotationTextBox.ReadOnly = true;
+            this.KeyPreview = true;
+
+        }
+
+        private void hideAnnotation()
+        {
+            AnnotationTextBox.Hide();
+            AnnotationLabel.Hide();
+            fontSelector.Hide();
+        }
+
     }
 }

@@ -149,5 +149,11 @@
   <ItemGroup>
     <None Include="Resources\undo1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pain.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
