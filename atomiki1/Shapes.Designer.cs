@@ -34,18 +34,19 @@ namespace atomiki1
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Shapes));
             this.TopPanelTools = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.UndoButton = new System.Windows.Forms.Button();
             this.ClearCanvas = new System.Windows.Forms.Button();
             this.FileMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitAppToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ButtonFile = new System.Windows.Forms.Button();
             this.ToolBoxPanel = new System.Windows.Forms.Panel();
             this.brushThicknessValueLabel = new System.Windows.Forms.Label();
             this.brushWidthTrackbar = new System.Windows.Forms.TrackBar();
             this.ToolsLayoutPanel = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.annotateSelectButton = new System.Windows.Forms.Button();
             this.FillSelectButton = new System.Windows.Forms.Button();
             this.EraserSelectButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -97,6 +98,8 @@ namespace atomiki1
             // TopPanelTools
             // 
             this.TopPanelTools.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.TopPanelTools.Controls.Add(this.panel2);
+            this.TopPanelTools.Controls.Add(this.UndoButton);
             this.TopPanelTools.Controls.Add(this.ClearCanvas);
             this.TopPanelTools.Controls.Add(this.ButtonFile);
             this.TopPanelTools.Dock = System.Windows.Forms.DockStyle.Top;
@@ -106,13 +109,38 @@ namespace atomiki1
             this.TopPanelTools.Size = new System.Drawing.Size(1063, 29);
             this.TopPanelTools.TabIndex = 1;
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(126, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1, 29);
+            this.panel2.TabIndex = 10;
+            // 
+            // UndoButton
+            // 
+            this.UndoButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.UndoButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("UndoButton.BackgroundImage")));
+            this.UndoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.UndoButton.FlatAppearance.BorderSize = 0;
+            this.UndoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UndoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UndoButton.ForeColor = System.Drawing.Color.White;
+            this.UndoButton.Location = new System.Drawing.Point(132, 2);
+            this.UndoButton.Name = "UndoButton";
+            this.UndoButton.Size = new System.Drawing.Size(26, 23);
+            this.UndoButton.TabIndex = 9;
+            this.UndoButton.UseVisualStyleBackColor = true;
+            this.UndoButton.Click += new System.EventHandler(this.UndoButton_Click);
+            // 
             // ClearCanvas
             // 
-            this.ClearCanvas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.ClearCanvas.BackColor = System.Drawing.Color.Transparent;
             this.ClearCanvas.ContextMenuStrip = this.FileMenuStrip;
             this.ClearCanvas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ClearCanvas.Dock = System.Windows.Forms.DockStyle.Left;
             this.ClearCanvas.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClearCanvas.FlatAppearance.BorderSize = 0;
             this.ClearCanvas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -133,48 +161,38 @@ namespace atomiki1
             this.FileMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitAppToolStripMenuItem,
             this.toolStripSeparator1,
-            this.saveToolStripMenuItem,
-            this.loadToolStripMenuItem});
+            this.saveToolStripMenuItem});
             this.FileMenuStrip.Name = "FileMenuStrip";
             this.FileMenuStrip.ShowItemToolTips = false;
-            this.FileMenuStrip.Size = new System.Drawing.Size(101, 76);
+            this.FileMenuStrip.Size = new System.Drawing.Size(99, 54);
             // 
             // exitAppToolStripMenuItem
             // 
             this.exitAppToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.exitAppToolStripMenuItem.Name = "exitAppToolStripMenuItem";
-            this.exitAppToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.exitAppToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.exitAppToolStripMenuItem.Text = "Exit";
             this.exitAppToolStripMenuItem.Click += new System.EventHandler(this.stripMenuExit_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(97, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(95, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // loadToolStripMenuItem
-            // 
-            this.loadToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.ToolTipText = "Load Image";
-            // 
             // ButtonFile
             // 
-            this.ButtonFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.ButtonFile.BackColor = System.Drawing.Color.Transparent;
             this.ButtonFile.ContextMenuStrip = this.FileMenuStrip;
             this.ButtonFile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ButtonFile.Dock = System.Windows.Forms.DockStyle.Left;
             this.ButtonFile.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ButtonFile.FlatAppearance.BorderSize = 0;
             this.ButtonFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -238,7 +256,7 @@ namespace atomiki1
             // ToolsLayoutPanel
             // 
             this.ToolsLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ToolsLayoutPanel.Controls.Add(this.button1);
+            this.ToolsLayoutPanel.Controls.Add(this.annotateSelectButton);
             this.ToolsLayoutPanel.Controls.Add(this.FillSelectButton);
             this.ToolsLayoutPanel.Controls.Add(this.EraserSelectButton);
             this.ToolsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Left;
@@ -247,20 +265,21 @@ namespace atomiki1
             this.ToolsLayoutPanel.Size = new System.Drawing.Size(34, 70);
             this.ToolsLayoutPanel.TabIndex = 7;
             // 
-            // button1
+            // annotateSelectButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.BackgroundImage = global::atomiki1.Properties.Resources.write;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(5, 43);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(18, 22);
-            this.button1.TabIndex = 7;
-            this.button1.UseVisualStyleBackColor = true;
+            this.annotateSelectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.annotateSelectButton.BackgroundImage = global::atomiki1.Properties.Resources.write;
+            this.annotateSelectButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.annotateSelectButton.FlatAppearance.BorderSize = 0;
+            this.annotateSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.annotateSelectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.annotateSelectButton.ForeColor = System.Drawing.Color.White;
+            this.annotateSelectButton.Location = new System.Drawing.Point(5, 43);
+            this.annotateSelectButton.Name = "annotateSelectButton";
+            this.annotateSelectButton.Size = new System.Drawing.Size(18, 22);
+            this.annotateSelectButton.TabIndex = 7;
+            this.annotateSelectButton.UseVisualStyleBackColor = true;
+            this.annotateSelectButton.Click += new System.EventHandler(this.annotateSelectButton_Click);
             // 
             // FillSelectButton
             // 
@@ -710,6 +729,7 @@ namespace atomiki1
             this.Canvas.MouseLeave += new System.EventHandler(this.Canvas_MouseLeave);
             this.Canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+            this.Canvas.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Canvas_PreviewKeyDown);
             // 
             // Shapes
             // 
@@ -724,11 +744,13 @@ namespace atomiki1
             this.Controls.Add(this.ToolBoxPanel);
             this.Controls.Add(this.TopPanelTools);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.KeyPreview = true;
             this.Name = "Shapes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Shape Designer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ShapeDesigner_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Shapes_KeyDown);
             this.TopPanelTools.ResumeLayout(false);
             this.FileMenuStrip.ResumeLayout(false);
             this.ToolBoxPanel.ResumeLayout(false);
@@ -778,7 +800,6 @@ namespace atomiki1
         private Button EllipseSelectButton;
         private ToolStripMenuItem saveToolStripMenuItem;
         private SaveFileDialog saveFileDialog;
-        private ToolStripMenuItem loadToolStripMenuItem;
         private Button circleSelectButton;
         private Button SquareSelectButton;
         private Button DiamondSelectButton;
@@ -792,12 +813,14 @@ namespace atomiki1
         private Button StarSelectorButton;
         private Button heartButtonSelector;
         private Button cubeSelectButton;
-        private Button button1;
+        private Button annotateSelectButton;
         private Panel polygonCornerPanel;
         private Label polygonSidesLabel;
         private TrackBar polygonCornerTrackBar;
         private Panel panel3;
         private Panel rightBorderPanel;
+        private Panel panel2;
+        private Button UndoButton;
     }
 }
 
